@@ -1,13 +1,15 @@
 import React from 'react';
 import MyDrawer from '../components/myDrawer';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { useShopGoods } from '../utils/store/shopInfo.store';
+import GoodItem from '../components/goods/goodItem';
+import { List } from '@material-ui/core';
 
 const useStyle = makeStyles(() =>
   createStyles({
     main: {
       display: 'flex',
       flexWrap: 'wrap',
-      justifyContent: 'space-between',
     },
   }),
 );
@@ -17,5 +19,14 @@ const useStyle = makeStyles(() =>
  * */
 export default function GoodSetting(): JSX.Element {
   const classes = useStyle();
-  return <MyDrawer className={classes.main}>商品设置</MyDrawer>;
+  const [shopGoods] = useShopGoods();
+  return (
+    <MyDrawer>
+      <List className={classes.main}>
+        {shopGoods.map((value) => (
+          <GoodItem key={value.gid} goodItem={value} />
+        ))}
+      </List>
+    </MyDrawer>
+  );
 }

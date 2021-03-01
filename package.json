@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "yarn format && eslint --ext .jsx --ext .js --ext .ts --ext .tsx src/",
+    "lint": "yarn format && eslint --config ./.eslintrc.js --ext .jsx --ext .js --ext .ts --ext .tsx src/",
     "format": "prettier --config ./.prettierrc.js --write ./src"
   },
   "dependencies": {

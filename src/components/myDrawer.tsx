@@ -138,7 +138,9 @@ export default function MyDrawer(props: MyDrawerProps): JSX.Element {
               secondary={shopInfo?.info}
             />
           </ListItem>
-          <Divider />
+        </List>
+        <Divider />
+        <List>
           <MyRouterListItem path="/" icon={<Home />} text={'首页'} />
           <MyRouterListItem icon={<Settings />} text={'商店设置'} path={'/setting'} />
           <MyRouterListItem icon={<ShoppingBasket />} text={'商品设置'} path={'/goods'} />
