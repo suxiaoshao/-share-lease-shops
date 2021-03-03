@@ -5,8 +5,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "serve": "vite preview",
-    "lint": "yarn format && eslint --config ./.eslintrc.js --ext .jsx --ext .js --ext .ts --ext .tsx src/",
-    "format": "prettier --config ./.prettierrc.js --write ./src"
+    "lint": "yarn format && yarn eslint && yarn tslint",
+    "format": "prettier --config ./.prettierrc.js --write ./src",
+    "eslint": "eslint --config ./.eslintrc.js --ext .jsx --ext .js --ext .ts --ext .tsx src/",
+    "tslint": " tsc --build tsconfig.json"
   },
   "dependencies": {
     "@date-io/date-fns": "1.x",

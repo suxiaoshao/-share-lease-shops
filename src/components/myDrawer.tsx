@@ -10,11 +10,12 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { Home, Settings, ShoppingBasket } from '@material-ui/icons';
+import { ExitToApp, Home, Settings, ShoppingBasket } from '@material-ui/icons';
 import { useHistory, useLocation } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import UserAccount from './userAccount/userAccount';
 import { useShopInfo } from '../utils/store/shopInfo.store';
+import { userInfoStore } from '../utils/store/userInfo.store';
 
 const useStyle = makeStyles(() => {
   const listWidth = 240;
@@ -127,7 +128,7 @@ export default function MyDrawer(props: MyDrawerProps): JSX.Element {
         open
         className={classes.myDrawer}
       >
-        <List>
+        <List component="nav">
           <ListItem>
             <ListItemAvatar>
               <Avatar src={'https://si.geilicdn.com/vshop-shop-logo-default.jpg'} />
@@ -140,10 +141,24 @@ export default function MyDrawer(props: MyDrawerProps): JSX.Element {
           </ListItem>
         </List>
         <Divider />
-        <List>
+        <List component="nav">
           <MyRouterListItem path="/" icon={<Home />} text={'首页'} />
           <MyRouterListItem icon={<Settings />} text={'商店设置'} path={'/setting'} />
           <MyRouterListItem icon={<ShoppingBasket />} text={'商品设置'} path={'/goods'} />
+        </List>
+        <Divider />
+        <List component="nav">
+          <ListItem
+            button
+            onClick={() => {
+              userInfoStore.setData(null);
+            }}
+          >
+            <ListItemIcon>
+              <ExitToApp />
+            </ListItemIcon>
+            <ListItemText>退出登陆</ListItemText>
+          </ListItem>
         </List>
       </Drawer>
       <UserAccount />

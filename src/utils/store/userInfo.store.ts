@@ -11,6 +11,15 @@ export class UserInfoStore extends Store<UserInfo | null> {
   constructor() {
     super(null);
   }
+
+  public setData(newData: UserInfo | null): void {
+    if (newData === null) {
+      window.localStorage.removeItem('userInfo');
+    } else {
+      window.localStorage.setItem('userInfo', JSON.stringify(newData));
+    }
+    super.setData(newData);
+  }
 }
 
 export const userInfoStore = new UserInfoStore();
@@ -25,9 +34,20 @@ export const useIsLogin = userInfoStore.getComputeFunc(
 /**
  * 注入监听时间当 userInfo 改变时 更新 shopInfo
  * */
-
-userInfoStore.addListen(() => {
-  asyncWithNotify(getMerchantMyself, '成功获取商店信息').then((value) => {
-    shopInfoStore.setData(value);
-  });
+userInfoStore.addListen((newValue) => {
+  if (newValue !== null) {
+    asyncWithNotify(getMerchantMyself, '成功获取商店信息').then((value) => {
+      shopInfoStore.setData(value);
+    });
+  } else {
+    shopInfoStore.setData(null);
+  }
 });
+
+/**
+ * 从本地数据库中读取 userInfo 信息
+ * */
+const userInfo = window.localStorage.getItem('userInfo');
+if (userInfo !== null) {
+  userInfoStore.setData(JSON.parse(userInfo));
+}
