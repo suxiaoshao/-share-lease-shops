@@ -4,7 +4,7 @@ import { useAccountStyle } from './userAccount';
 import { login } from '../../utils/http/user/login';
 import { userInfoStore } from '../../utils/store/userInfo.store';
 import { Email, Lock } from '@material-ui/icons';
-import { asyncFunc } from '../../utils/hook/asyncFunc';
+import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
 
 export interface LoginProp {
   /**
@@ -71,7 +71,7 @@ export default function Login(props: LoginProp): JSX.Element {
       <DialogActions>
         <Button
           onClick={() => {
-            asyncFunc(() => {
+            asyncWithNotify(() => {
               return login(props.email, props.password);
             }, '成功登陆').then((value) => {
               userInfoStore.setData(value);

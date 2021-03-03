@@ -29,4 +29,13 @@ export const shopInfoStore = new ShopInfoStore();
 
 export const useShopInfo = shopInfoStore.getDataFunc();
 
-export const useShopGoods = shopInfoStore.getComputeFunc<GoodProp[]>((data) => data?.goods ?? []);
+export const useShopGoods = shopInfoStore.getComputeFunc<GoodProp[]>(
+  (data) => data?.goods ?? [],
+  (newComputeData, preData) =>
+    preData === null
+      ? null
+      : {
+          ...preData,
+          goods: newComputeData,
+        },
+);

@@ -70,14 +70,20 @@ export class Store<Data> {
    * 获取一个 hooks 函数用来设置和访问数据
    * */
   public getDataFunc(): () => [Data, (newData: Data) => void] {
-    return this.getComputeFunc<Data>((data) => data);
+    return this.getComputeFunc<Data>(
+      (data) => data,
+      (newComputeData) => newComputeData,
+    );
   }
 
   /**
-   * 获取计算属性
+   * 获取计算属性,和设置
    * */
-  public getComputeFunc<Ret>(func: (data: Data) => Ret): () => [Ret, (newData: Data) => void] {
-    return (): [Ret, (newData: Data) => void] => {
+  public getComputeFunc<ComData>(
+    computeFunc: (data: Data) => ComData,
+    reduceFunc: (newComputeData: ComData, preData: Data) => Data,
+  ): () => [ComData, (newComputeData: ComData) => void] {
+    return (): [ComData, (newComputeData: ComData) => void] => {
       /**
        * 基础数据
        * */
@@ -93,13 +99,16 @@ export class Store<Data> {
           this.deleteListen(flag);
         };
       }, []);
-      const realValue = useMemo<Ret>(() => {
-        return func(baseValue);
+      /**
+       * 计算真实数据
+       * */
+      const realValue = useMemo<ComData>(() => {
+        return computeFunc(baseValue);
       }, [baseValue]);
       return [
         realValue,
         (newData) => {
-          this.setData(newData);
+          this.setData(reduceFunc(newData, baseValue));
         },
       ];
     };

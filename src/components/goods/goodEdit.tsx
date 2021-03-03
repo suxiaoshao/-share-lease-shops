@@ -23,7 +23,7 @@ import { getFileFromUrl } from '../../utils/getFilefromUrl';
 import { upload } from '../../utils/http/uploadImg';
 import { updateGood } from '../../utils/http/shop/updateGood';
 import PriceInput from '../common/priceInput';
-import { asyncFunc } from '../../utils/hook/asyncFunc';
+import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
 import { shopInfoStore } from '../../utils/store/shopInfo.store';
 
 interface GoodEditProp {
@@ -137,7 +137,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
           color={'primary'}
           onClick={() => {
             let src = newImage;
-            asyncFunc(async (): Promise<undefined> => {
+            asyncWithNotify(async (): Promise<undefined> => {
               if (newImage !== props.goodItem.picUrl) {
                 const file = await getFileFromUrl(newImage);
                 src = await upload(file);

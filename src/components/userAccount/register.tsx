@@ -4,7 +4,7 @@ import { Button, DialogActions, IconButton, InputAdornment, TextField, Tooltip }
 import { AccountCircle, Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { register } from '../../utils/http/user/register';
 import { sendMailCode } from '../../utils/http/user/sendMailCode';
-import { asyncFunc } from '../../utils/hook/asyncFunc';
+import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
 
 export interface RegisterProp {
   /**
@@ -71,7 +71,7 @@ export default function Register(props: RegisterProp): JSX.Element {
               <Tooltip title={'发送验证码'}>
                 <IconButton
                   onClick={() => {
-                    asyncFunc(() => {
+                    asyncWithNotify(() => {
                       return sendMailCode(email);
                     }, '成功发送验证码').then();
                   }}
@@ -119,7 +119,7 @@ export default function Register(props: RegisterProp): JSX.Element {
       <DialogActions>
         <Button
           onClick={() => {
-            asyncFunc(() => {
+            asyncWithNotify(() => {
               return register(name, password, email, code);
             }, '成功注册').then(() => {
               props.onSuccess(email, password);

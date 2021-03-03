@@ -9,7 +9,7 @@ export interface AsyncFunc<T> {
  * @param func 执行的函数
  * @param message 成功是发送的提示,为空说明不用执行
  * */
-export function asyncFunc<T>(func: AsyncFunc<T>, message?: string): Promise<T> {
+export function asyncWithNotify<T>(func: AsyncFunc<T>, message?: string): Promise<T> {
   return func()
     .then((value) => {
       if (message !== undefined) {

@@ -5,7 +5,7 @@ import { useShopInfo } from '../utils/store/shopInfo.store';
 import { makeStyles } from '@material-ui/core/styles';
 import { Description, Storefront } from '@material-ui/icons';
 import { updateMerchant } from '../utils/http/shop/updateMerchant';
-import { asyncFunc } from '../utils/hook/asyncFunc';
+import { asyncWithNotify } from '../utils/hook/asyncWithNotify';
 
 const useStyle = makeStyles((theme) =>
   createStyles({
@@ -87,7 +87,7 @@ export default function ShopSetting(): JSX.Element {
             variant={'contained'}
             color={'primary'}
             onClick={() => {
-              asyncFunc(() => {
+              asyncWithNotify(() => {
                 return updateMerchant(name, info);
               }, '成功更新').then(() => {
                 if (shopInfo !== null) {

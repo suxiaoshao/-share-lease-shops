@@ -4,7 +4,7 @@ import { Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { useAccountStyle } from './userAccount';
 import { resetPassword } from '../../utils/http/user/resetPassword';
 import { resetPwdMail } from '../../utils/http/user/resetPwdMail';
-import { asyncFunc } from '../../utils/hook/asyncFunc';
+import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
 
 export interface ForgetProp {
   /**
@@ -51,7 +51,7 @@ export function Forget(props: ForgetProp): JSX.Element {
               <Tooltip title={'发送验证码'}>
                 <IconButton
                   onClick={() => {
-                    asyncFunc(() => {
+                    asyncWithNotify(() => {
                       return resetPwdMail(email);
                     }, '成功发送验证码').then();
                   }}
@@ -99,7 +99,7 @@ export function Forget(props: ForgetProp): JSX.Element {
       <DialogActions>
         <Button
           onClick={() => {
-            asyncFunc(() => {
+            asyncWithNotify(() => {
               return resetPassword(email, password, code);
             }, '成功重置密码').then(() => {
               props.onSuccess(email, password);
