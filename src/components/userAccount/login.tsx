@@ -4,7 +4,7 @@ import { useAccountStyle } from './userAccount';
 import { login } from '../../utils/http/user/login';
 import { userInfoStore } from '../../utils/store/userInfo.store';
 import { Email, Lock } from '@material-ui/icons';
-import { useSnackbar } from 'notistack';
+import { asyncFunc } from '../../utils/hook/asyncFunc';
 
 export interface LoginProp {
   /**
@@ -32,7 +32,6 @@ export interface LoginProp {
  * */
 export default function Login(props: LoginProp): JSX.Element {
   const classes = useAccountStyle();
-  const { enqueueSnackbar } = useSnackbar();
   return (
     <form className={classes.form}>
       <TextField
@@ -72,14 +71,11 @@ export default function Login(props: LoginProp): JSX.Element {
       <DialogActions>
         <Button
           onClick={() => {
-            login(props.email, props.password)
-              .then((value) => {
-                userInfoStore.setData(value);
-                enqueueSnackbar('成功登陆', { variant: 'success' });
-              })
-              .catch((err: Error) => {
-                enqueueSnackbar(err.message, { variant: 'error' });
-              });
+            asyncFunc(() => {
+              return login(props.email, props.password);
+            }, '成功登陆').then((value) => {
+              userInfoStore.setData(value);
+            });
           }}
           variant="contained"
           color={'primary'}

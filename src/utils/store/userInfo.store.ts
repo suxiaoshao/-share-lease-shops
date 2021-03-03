@@ -2,7 +2,7 @@ import { Store } from './store';
 import { UserInfo } from '../http/user/getInfo';
 import { getMerchantMyself } from '../http/shop/getMerchantMyself';
 import { shopInfoStore } from './shopInfo.store';
-import { notifySubject } from '../../components/common/notify';
+import { asyncFunc } from '../hook/asyncFunc';
 
 /**
  * 全局用户信息
@@ -24,20 +24,7 @@ export const useIsLogin = userInfoStore.getComputeFunc((data) => data !== null);
  * */
 
 userInfoStore.addListen(() => {
-  getMerchantMyself()
-    .then((value) => {
-      shopInfoStore.setData(value);
-      notifySubject.next({
-        message: '成功获取商店信息',
-        options: { variant: 'success' },
-      });
-    })
-    .catch((err: Error) => {
-      notifySubject.next({
-        message: err.message,
-        options: {
-          variant: 'error',
-        },
-      });
-    });
+  asyncFunc(getMerchantMyself, '成功获取商店信息').then((value) => {
+    shopInfoStore.setData(value);
+  });
 });

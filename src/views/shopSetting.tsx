@@ -5,7 +5,7 @@ import { useShopInfo } from '../utils/store/shopInfo.store';
 import { makeStyles } from '@material-ui/core/styles';
 import { Description, Storefront } from '@material-ui/icons';
 import { updateMerchant } from '../utils/http/shop/updateMerchant';
-import { useSnackbar } from 'notistack';
+import { asyncFunc } from '../utils/hook/asyncFunc';
 
 const useStyle = makeStyles((theme) =>
   createStyles({
@@ -40,7 +40,6 @@ export default function ShopSetting(): JSX.Element {
    * 新商店描述
    * */
   const [info, setInfo] = React.useState(shopInfo?.info ?? '');
-  const { enqueueSnackbar } = useSnackbar();
   /**
    * 根据商店信息新商店信息更新
    * */
@@ -88,20 +87,17 @@ export default function ShopSetting(): JSX.Element {
             variant={'contained'}
             color={'primary'}
             onClick={() => {
-              updateMerchant(name, info)
-                .then(() => {
-                  if (shopInfo !== null) {
-                    setShopInfo({
-                      ...shopInfo,
-                      name,
-                      info,
-                    });
-                  }
-                  enqueueSnackbar('成功更新', { variant: 'success' });
-                })
-                .catch((err: Error) => {
-                  enqueueSnackbar(err.message, { variant: 'error' });
-                });
+              asyncFunc(() => {
+                return updateMerchant(name, info);
+              }, '成功更新').then(() => {
+                if (shopInfo !== null) {
+                  setShopInfo({
+                    ...shopInfo,
+                    name,
+                    info,
+                  });
+                }
+              });
             }}
           >
             更新

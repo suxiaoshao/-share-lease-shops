@@ -26,11 +26,14 @@ const useStyle = makeStyles((theme) =>
       height: 'auto',
       margin: theme.spacing(1.5),
       width: `calc(100% / 4 - ${theme.spacing(3)}px)`,
-      '& @media screen and (max-width: 1260px)': {
-        width: `calc(100% / 2 - ${theme.spacing(3)}px)`,
-      },
       '@media screen and (max-width: 1440px)': {
         width: `calc(100% / 3 - ${theme.spacing(3)}px)`,
+      },
+      '@media screen and (max-width: 1160px)': {
+        width: `calc(100% / 2 - ${theme.spacing(3)}px)`,
+      },
+      '@media screen and (max-width: 850px)': {
+        width: `calc(100% - ${theme.spacing(3)}px)`,
       },
     },
   }),

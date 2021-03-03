@@ -3,8 +3,8 @@ import { Button, DialogActions, IconButton, InputAdornment, TextField, Tooltip }
 import { Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { useAccountStyle } from './userAccount';
 import { resetPassword } from '../../utils/http/user/resetPassword';
-import { useSnackbar } from 'notistack';
 import { resetPwdMail } from '../../utils/http/user/resetPwdMail';
+import { asyncFunc } from '../../utils/hook/asyncFunc';
 
 export interface ForgetProp {
   /**
@@ -29,7 +29,6 @@ export function Forget(props: ForgetProp): JSX.Element {
    * 验证码
    * */
   const [code, setCode] = React.useState<string>('');
-  const { enqueueSnackbar } = useSnackbar();
   return (
     <form className={classes.form}>
       <TextField
@@ -52,15 +51,9 @@ export function Forget(props: ForgetProp): JSX.Element {
               <Tooltip title={'发送验证码'}>
                 <IconButton
                   onClick={() => {
-                    resetPwdMail(email)
-                      .then(() => {
-                        enqueueSnackbar('成功发送验证码', {
-                          variant: 'success',
-                        });
-                      })
-                      .catch((err: Error) => {
-                        enqueueSnackbar(err.message, { variant: 'error' });
-                      });
+                    asyncFunc(() => {
+                      return resetPwdMail(email);
+                    }, '成功发送验证码').then();
                   }}
                 >
                   <Send />
@@ -106,14 +99,11 @@ export function Forget(props: ForgetProp): JSX.Element {
       <DialogActions>
         <Button
           onClick={() => {
-            resetPassword(email, password, code)
-              .then(() => {
-                props.onSuccess(email, password);
-                enqueueSnackbar('成功重置密码', { variant: 'success' });
-              })
-              .catch((err: Error) => {
-                enqueueSnackbar(err.message, { variant: 'error' });
-              });
+            asyncFunc(() => {
+              return resetPassword(email, password, code);
+            }, '成功重置密码').then(() => {
+              props.onSuccess(email, password);
+            });
           }}
           variant="contained"
           color={'primary'}

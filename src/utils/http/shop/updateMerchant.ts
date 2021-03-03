@@ -2,8 +2,17 @@ import { httpPut } from '../main';
 import { shopInfoStore } from '../../store/shopInfo.store';
 
 interface UpdateMerchantInterface {
+  /**
+   * 商店 di
+   * */
   mid: number;
+  /**
+   * 商店名
+   * */
   name: string;
+  /**
+   * 商店描述
+   * */
   info: string;
 }
 

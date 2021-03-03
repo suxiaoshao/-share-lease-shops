@@ -1,5 +1,7 @@
 import { httpGet } from '../main';
 
+export type GoodType = '电子器件';
+
 export interface GoodProp {
   /**
    * 商品 id
@@ -12,7 +14,7 @@ export interface GoodProp {
   /**
    * 类型
    * */
-  type: string;
+  type: GoodType;
   /**
    * 租金
    * */
@@ -32,7 +34,7 @@ export interface GoodProp {
   /**
    * 商家 id
    * */
-  mig: number;
+  mid: number;
 }
 
 export async function getGoodList(

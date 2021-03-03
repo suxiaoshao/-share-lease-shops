@@ -3,8 +3,8 @@ import { useAccountStyle } from './userAccount';
 import { Button, DialogActions, IconButton, InputAdornment, TextField, Tooltip } from '@material-ui/core';
 import { AccountCircle, Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { register } from '../../utils/http/user/register';
-import { useSnackbar } from 'notistack';
 import { sendMailCode } from '../../utils/http/user/sendMailCode';
+import { asyncFunc } from '../../utils/hook/asyncFunc';
 
 export interface RegisterProp {
   /**
@@ -33,7 +33,6 @@ export default function Register(props: RegisterProp): JSX.Element {
    * 验证码
    * */
   const [code, setCode] = React.useState<string>('');
-  const { enqueueSnackbar } = useSnackbar();
   return (
     <form className={classes.form}>
       <TextField
@@ -72,15 +71,9 @@ export default function Register(props: RegisterProp): JSX.Element {
               <Tooltip title={'发送验证码'}>
                 <IconButton
                   onClick={() => {
-                    sendMailCode(email)
-                      .then(() => {
-                        enqueueSnackbar('成功发送验证码', {
-                          variant: 'success',
-                        });
-                      })
-                      .catch((err: Error) => {
-                        enqueueSnackbar(err.message, { variant: 'error' });
-                      });
+                    asyncFunc(() => {
+                      return sendMailCode(email);
+                    }, '成功发送验证码').then();
                   }}
                 >
                   <Send />
@@ -126,14 +119,11 @@ export default function Register(props: RegisterProp): JSX.Element {
       <DialogActions>
         <Button
           onClick={() => {
-            register(name, password, email, code)
-              .then(() => {
-                props.onSuccess(email, password);
-                enqueueSnackbar('成功注册', { variant: 'success' });
-              })
-              .catch((err: Error) => {
-                enqueueSnackbar(err.message, { variant: 'error' });
-              });
+            asyncFunc(() => {
+              return register(name, password, email, code);
+            }, '成功注册').then(() => {
+              props.onSuccess(email, password);
+            });
           }}
           variant="contained"
           color={'primary'}
