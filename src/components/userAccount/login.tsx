@@ -5,6 +5,7 @@ import { login } from '../../utils/http/user/login';
 import { userInfoStore } from '../../utils/store/userInfo.store';
 import { Email, Lock } from '@material-ui/icons';
 import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
+import { useAsyncFn } from 'react-use';
 
 export interface LoginProp {
   /**
@@ -32,6 +33,16 @@ export interface LoginProp {
  * */
 export default function Login(props: LoginProp): JSX.Element {
   const classes = useAccountStyle();
+  /**
+   * 登陆
+   * */
+  const [state, fetch] = useAsyncFn(() => {
+    return asyncWithNotify(() => {
+      return login(props.email, props.password);
+    }, '成功登陆').then((value) => {
+      userInfoStore.setData(value);
+    });
+  }, [props.email, props.password]);
   return (
     <form className={classes.form}>
       <TextField
@@ -69,17 +80,7 @@ export default function Login(props: LoginProp): JSX.Element {
         }}
       />
       <DialogActions>
-        <Button
-          onClick={() => {
-            asyncWithNotify(() => {
-              return login(props.email, props.password);
-            }, '成功登陆').then((value) => {
-              userInfoStore.setData(value);
-            });
-          }}
-          variant="contained"
-          color={'primary'}
-        >
+        <Button onClick={fetch} disabled={state.loading} variant="contained" color={'primary'}>
           登陆
         </Button>
       </DialogActions>

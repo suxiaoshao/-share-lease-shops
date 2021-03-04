@@ -38,8 +38,8 @@ export default function UploadImage(props: UploadImageProp): JSX.Element {
             const blob = files[0].slice();
             const src = URL.createObjectURL(blob);
             props.onChangeSrc(src);
+            event.target.files = null;
           }
-          console.log(event.target.files);
         }}
       />
       <ButtonBase

@@ -20,11 +20,13 @@ import { useFormStyle } from '../../utils/hook/useFornStyle';
 import UploadImage from '../common/uploadImage';
 import { makeStyles } from '@material-ui/core/styles';
 import { getFileFromUrl } from '../../utils/getFilefromUrl';
-import { upload } from '../../utils/http/uploadImg';
 import { updateGood } from '../../utils/http/shop/updateGood';
 import PriceInput from '../common/priceInput';
 import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
 import { shopInfoStore } from '../../utils/store/shopInfo.store';
+import { upload } from '../../utils/http/uploadImg';
+import { baseUrl } from '../../utils/http/main';
+import { useAsyncFn } from 'react-use';
 
 interface GoodEditProp {
   /**
@@ -75,6 +77,32 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
    * 新价格
    * */
   const [newPrice, setNewPrice] = React.useState(props.goodItem.price);
+  /**
+   * 上传接口
+   * */
+  const [state, fetch] = useAsyncFn(() => {
+    let src = newImage;
+    return asyncWithNotify(async (): Promise<undefined> => {
+      /**
+       * 获取图片 url
+       * */
+      if (newImage !== props.goodItem.picUrl) {
+        const file = await getFileFromUrl(newImage);
+        src = `${baseUrl}/file/${await upload(file)}`;
+      }
+      return await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
+    }, '更新信息成功').then(() => {
+      shopInfoStore.updateGood({
+        ...props.goodItem,
+        name: newName,
+        type: newType,
+        picUrl: src,
+        price: newPrice,
+        info: newInfo,
+      });
+      props.onClose();
+    });
+  }, [newImage, newInfo, newName, newPrice, newType, props.goodItem, props.onClose]);
   return (
     <Dialog maxWidth={'sm'} open={props.open} onClose={props.onClose}>
       <DialogTitle>修改商品信息</DialogTitle>
@@ -133,29 +161,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
         >
           还原
         </Button>
-        <Button
-          color={'primary'}
-          onClick={() => {
-            let src = newImage;
-            asyncWithNotify(async (): Promise<undefined> => {
-              if (newImage !== props.goodItem.picUrl) {
-                const file = await getFileFromUrl(newImage);
-                src = await upload(file);
-              }
-              return await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
-            }, '更新信息成功').then(() => {
-              shopInfoStore.updateGood({
-                ...props.goodItem,
-                name: newName,
-                type: newType,
-                picUrl: src,
-                price: newPrice,
-                info: newInfo,
-              });
-              props.onClose();
-            });
-          }}
-        >
+        <Button color={'primary'} onClick={fetch} disabled={state.loading}>
           确定
         </Button>
       </DialogActions>

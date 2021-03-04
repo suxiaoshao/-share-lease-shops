@@ -5,6 +5,7 @@ import { AccountCircle, Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { register } from '../../utils/http/user/register';
 import { sendMailCode } from '../../utils/http/user/sendMailCode';
 import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
+import { useAsyncFn } from 'react-use';
 
 export interface RegisterProp {
   /**
@@ -33,6 +34,24 @@ export default function Register(props: RegisterProp): JSX.Element {
    * 验证码
    * */
   const [code, setCode] = React.useState<string>('');
+  /**
+   * 获取注册验证码
+   * */
+  const [codeState, sendCode] = useAsyncFn(() => {
+    return asyncWithNotify(() => {
+      return sendMailCode(email);
+    }, '成功发送验证码');
+  }, [email]);
+  /**
+   * 注册
+   * */
+  const [registerState, registerFn] = useAsyncFn(() => {
+    return asyncWithNotify(() => {
+      return register(name, password, email, code);
+    }, '成功注册').then(() => {
+      props.onSuccess(email, password);
+    });
+  }, [name, password, email, code]);
   return (
     <form className={classes.form}>
       <TextField
@@ -69,13 +88,7 @@ export default function Register(props: RegisterProp): JSX.Element {
           endAdornment: (
             <InputAdornment position={'end'}>
               <Tooltip title={'发送验证码'}>
-                <IconButton
-                  onClick={() => {
-                    asyncWithNotify(() => {
-                      return sendMailCode(email);
-                    }, '成功发送验证码').then();
-                  }}
-                >
+                <IconButton disabled={codeState.loading} onClick={sendCode}>
                   <Send />
                 </IconButton>
               </Tooltip>
@@ -117,17 +130,7 @@ export default function Register(props: RegisterProp): JSX.Element {
         }}
       />
       <DialogActions>
-        <Button
-          onClick={() => {
-            asyncWithNotify(() => {
-              return register(name, password, email, code);
-            }, '成功注册').then(() => {
-              props.onSuccess(email, password);
-            });
-          }}
-          variant="contained"
-          color={'primary'}
-        >
+        <Button disabled={registerState.loading} onClick={registerFn} variant="contained" color={'primary'}>
           注册
         </Button>
       </DialogActions>

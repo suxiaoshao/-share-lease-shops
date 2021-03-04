@@ -25,7 +25,7 @@ export function getFileFromUrl(url: string): Promise<File> {
         context?.drawImage(image, 0, 0);
         canvas.toBlob((blob) => {
           if (blob !== null) {
-            resolve(new File([blob], 'file.png'));
+            resolve(new File([blob], 'file.png', { type: 'image/png' }));
           } else {
             reject(new Error('图片读取失败'));
           }

@@ -5,6 +5,7 @@ import { useAccountStyle } from './userAccount';
 import { resetPassword } from '../../utils/http/user/resetPassword';
 import { resetPwdMail } from '../../utils/http/user/resetPwdMail';
 import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
+import { useAsyncFn } from 'react-use';
 
 export interface ForgetProp {
   /**
@@ -29,6 +30,24 @@ export function Forget(props: ForgetProp): JSX.Element {
    * 验证码
    * */
   const [code, setCode] = React.useState<string>('');
+  /**
+   * 获取验证码
+   * */
+  const [codeState, sendCode] = useAsyncFn(() => {
+    return asyncWithNotify(() => {
+      return resetPwdMail(email);
+    }, '成功发送验证码').then();
+  }, [email]);
+  /**
+   * 重置验证码
+   * */
+  const [resetState, resetPwd] = useAsyncFn(() => {
+    return asyncWithNotify(() => {
+      return resetPassword(email, password, code);
+    }, '成功重置密码').then(() => {
+      props.onSuccess(email, password);
+    });
+  }, [email, password, code]);
   return (
     <form className={classes.form}>
       <TextField
@@ -49,13 +68,7 @@ export function Forget(props: ForgetProp): JSX.Element {
           endAdornment: (
             <InputAdornment position={'end'}>
               <Tooltip title={'发送验证码'}>
-                <IconButton
-                  onClick={() => {
-                    asyncWithNotify(() => {
-                      return resetPwdMail(email);
-                    }, '成功发送验证码').then();
-                  }}
-                >
+                <IconButton onClick={sendCode} disabled={codeState.loading}>
                   <Send />
                 </IconButton>
               </Tooltip>
@@ -97,17 +110,7 @@ export function Forget(props: ForgetProp): JSX.Element {
         }}
       />
       <DialogActions>
-        <Button
-          onClick={() => {
-            asyncWithNotify(() => {
-              return resetPassword(email, password, code);
-            }, '成功重置密码').then(() => {
-              props.onSuccess(email, password);
-            });
-          }}
-          variant="contained"
-          color={'primary'}
-        >
+        <Button onClick={resetPwd} disabled={resetState.loading} variant="contained" color={'primary'}>
           重置密码
         </Button>
       </DialogActions>

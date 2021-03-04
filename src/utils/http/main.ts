@@ -1,8 +1,10 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { userInfoStore } from '../store/userInfo.store';
 
+export const baseUrl = 'http://software.remotehost.icu';
+
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'http://software.remotehost.icu';
+axios.defaults.baseURL = baseUrl;
 
 export interface HttpSuccessData<T> {
   status: 0;
@@ -45,8 +47,9 @@ export async function httpBase<Req, Res>(method: 'get' | 'post' | 'put', url: st
       /**
        * 如果是 token 过期,删除用户信息
        * */
-      if (resData.data.status === 1002) {
+      if (err.response.data.status === 1002) {
         userInfoStore.setData(null);
+        throw new Error('登陆过期');
       }
       throw new Error(err.response.data.message);
     }

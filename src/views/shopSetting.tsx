@@ -6,6 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Description, Storefront } from '@material-ui/icons';
 import { updateMerchant } from '../utils/http/shop/updateMerchant';
 import { asyncWithNotify } from '../utils/hook/asyncWithNotify';
+import { useAsyncFn } from 'react-use';
 
 const useStyle = makeStyles((theme) =>
   createStyles({
@@ -47,6 +48,22 @@ export default function ShopSetting(): JSX.Element {
     setInfo(shopInfo?.info ?? '');
     setName(shopInfo?.name ?? '');
   }, [shopInfo]);
+  /**
+   * 获取状态和数据
+   * */
+  const [state, fetch] = useAsyncFn(async () => {
+    return asyncWithNotify(() => {
+      return updateMerchant(name, info);
+    }, '成功更新').then(() => {
+      if (shopInfo !== null) {
+        setShopInfo({
+          ...shopInfo,
+          name,
+          info,
+        });
+      }
+    });
+  }, [name, info, shopInfo]);
   return (
     <MyDrawer className={classes.main}>
       <form className={classes.form}>
@@ -83,23 +100,7 @@ export default function ShopSetting(): JSX.Element {
           }}
         />
         <DialogActions>
-          <Button
-            variant={'contained'}
-            color={'primary'}
-            onClick={() => {
-              asyncWithNotify(() => {
-                return updateMerchant(name, info);
-              }, '成功更新').then(() => {
-                if (shopInfo !== null) {
-                  setShopInfo({
-                    ...shopInfo,
-                    name,
-                    info,
-                  });
-                }
-              });
-            }}
-          >
+          <Button variant={'contained'} color={'primary'} onClick={fetch} disabled={state.loading}>
             更新
           </Button>
         </DialogActions>
