@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import { Button, createMuiTheme, CssBaseline, MuiThemeProvider, Theme } from '@material-ui/core';
+import { Button, createMuiTheme, createStyles, CssBaseline, MuiThemeProvider, Theme } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { zhCN } from 'date-fns/locale';
 import DateFnsUtils from '@date-io/date-fns';
 import { SnackbarProvider } from 'notistack';
 import { Notify } from './common/notify';
+import { makeStyles } from '@material-ui/core/styles';
 
 /**
  * @author sushao
@@ -19,6 +20,32 @@ interface MyThemeProp {
   children: React.ReactNode;
 }
 
+interface StyleProp {
+  /**
+   * 是否是暗色系统
+   * */
+  isDark: boolean;
+}
+
+const useStyle = makeStyles<Theme, StyleProp>((theme) =>
+  createStyles({
+    '@global': {
+      '::-webkit-scrollbar': {
+        height: theme.spacing(1),
+        width: theme.spacing(1),
+        backgroundColor: '#00000000',
+      },
+      '::-webkit-scrollbar-thumb': {
+        borderRadius: theme.spacing(0.5),
+        border: 'none',
+      },
+      '::-webkit-scrollbar-track-piece': {
+        backgroundColor: '#00000000',
+      },
+    },
+  }),
+);
+
 /**
  * @author sushao
  * @version 0.2.2
@@ -29,13 +56,13 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
   /**
    * 判断在 utools 是否是黑色
    * */
-  const [dark] = useState<boolean>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [isDark] = useState<boolean>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
   /**
    * 主题对象
    * */
   const themeObject = useMemo<Theme>(() => {
     return createMuiTheme({
-      palette: dark
+      palette: isDark
         ? {
             type: 'dark',
             primary: {
@@ -51,8 +78,9 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
           }
         : undefined,
     });
-  }, [dark]);
+  }, [isDark]);
   const nonstickRef = React.useRef<SnackbarProvider>(null);
+  useStyle({ isDark });
 
   return (
     <MuiThemeProvider theme={themeObject}>
@@ -74,7 +102,7 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
           )}
         >
           <Notify />
-          <div className={dark ? 'my-dark' : 'my-light'}>{props.children}</div>
+          {props.children}
         </SnackbarProvider>
       </MuiPickersUtilsProvider>
     </MuiThemeProvider>

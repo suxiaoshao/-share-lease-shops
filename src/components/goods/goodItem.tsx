@@ -2,18 +2,17 @@ import React from 'react';
 import {
   Avatar,
   Card,
+  CardContent,
   CardHeader,
+  CardMedia,
   createStyles,
   IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Tooltip,
+  Typography,
 } from '@material-ui/core';
 import { GoodProp } from '../../utils/http/good/goodList';
 import { makeStyles } from '@material-ui/core/styles';
-import { Edit, Money, Payment } from '@material-ui/icons';
+import { Edit } from '@material-ui/icons';
 import GoodEdit from './goodEdit';
 
 export interface GoodItemProp {
@@ -36,6 +35,13 @@ const useStyle = makeStyles((theme) =>
         width: `calc(100% - ${theme.spacing(3)}px)`,
       },
     },
+    media: {
+      height: 0,
+      paddingTop: '56.25%', // 16:9
+    },
+    rent: {
+      marginLeft: theme.spacing(2),
+    },
   }),
 );
 
@@ -47,7 +53,7 @@ export default function GoodItem(props: GoodItemProp): JSX.Element {
       <CardHeader
         avatar={<Avatar src={props.goodItem.picUrl} />}
         title={props.goodItem.name}
-        subheader={props.goodItem.info}
+        subheader={props.goodItem.type}
         action={
           <Tooltip title={'修改'}>
             <IconButton
@@ -60,20 +66,15 @@ export default function GoodItem(props: GoodItemProp): JSX.Element {
           </Tooltip>
         }
       />
-      <List>
-        <ListItem>
-          <ListItemIcon>
-            <Money />
-          </ListItemIcon>
-          <ListItemText primary={'价格'} secondary={props.goodItem.price} />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon>
-            <Payment />
-          </ListItemIcon>
-          <ListItemText primary={'租金'} secondary={props.goodItem.rent} />
-        </ListItem>
-      </List>
+      <CardMedia className={classes.media} image={props.goodItem.picUrl} />
+      <CardContent>
+        <Typography variant="body1" component="p">
+          {props.goodItem.info}
+        </Typography>
+        <Typography variant={'body1'} color={'textSecondary'} component={'p'}>
+          <span>价格 • {props.goodItem.price}</span> <span className={classes.rent}>租金 • {props.goodItem.rent}</span>
+        </Typography>
+      </CardContent>
       <GoodEdit
         open={editOpen}
         onClose={() => {
