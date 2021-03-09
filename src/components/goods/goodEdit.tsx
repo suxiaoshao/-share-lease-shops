@@ -22,11 +22,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import { getFileFromUrl } from '../../utils/getFilefromUrl';
 import { updateGood } from '../../utils/http/shop/updateGood';
 import PriceInput from '../common/priceInput';
-import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
 import { shopInfoStore } from '../../utils/store/shopInfo.store';
 import { upload } from '../../utils/http/uploadImg';
 import { baseUrl } from '../../utils/http/main';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
 
 interface GoodEditProp {
   /**
@@ -80,9 +79,9 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
   /**
    * 上传接口
    * */
-  const [state, fetch] = useAsyncFn(() => {
-    let src = newImage;
-    return asyncWithNotify(async (): Promise<undefined> => {
+  const [state, fetch] = useAsyncFnWithNotify(
+    async () => {
+      let src = newImage;
       /**
        * 获取图片 url
        * */
@@ -90,8 +89,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
         const file = await getFileFromUrl(newImage);
         src = `${baseUrl}/file/${await upload(file)}`;
       }
-      return await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
-    }, '更新信息成功').then(() => {
+      await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
       shopInfoStore.updateGood({
         ...props.goodItem,
         name: newName,
@@ -101,8 +99,10 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
         info: newInfo,
       });
       props.onClose();
-    });
-  }, [newImage, newInfo, newName, newPrice, newType, props.goodItem, props.onClose]);
+    },
+    '更新信息成功',
+    [newImage, newInfo, newName, newPrice, newType, props.goodItem, props.onClose],
+  );
   return (
     <Dialog maxWidth={'sm'} open={props.open} onClose={props.onClose}>
       <DialogTitle>修改商品信息</DialogTitle>

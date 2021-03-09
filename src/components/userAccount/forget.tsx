@@ -4,8 +4,7 @@ import { Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { useAccountStyle } from './userAccount';
 import { resetPassword } from '../../utils/http/user/resetPassword';
 import { resetPwdMail } from '../../utils/http/user/resetPwdMail';
-import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
 
 export interface ForgetProp {
   /**
@@ -33,21 +32,24 @@ export function Forget(props: ForgetProp): JSX.Element {
   /**
    * 获取验证码
    * */
-  const [codeState, sendCode] = useAsyncFn(() => {
-    return asyncWithNotify(() => {
-      return resetPwdMail(email);
-    }, '成功发送验证码').then();
-  }, [email]);
+  const [codeState, sendCode] = useAsyncFnWithNotify(
+    async () => {
+      await resetPwdMail(email);
+    },
+    '成功发送验证码',
+    [email],
+  );
   /**
    * 重置验证码
    * */
-  const [resetState, resetPwd] = useAsyncFn(() => {
-    return asyncWithNotify(() => {
-      return resetPassword(email, password, code);
-    }, '成功重置密码').then(() => {
+  const [resetState, resetPwd] = useAsyncFnWithNotify(
+    async () => {
+      await resetPassword(email, password, code);
       props.onSuccess(email, password);
-    });
-  }, [email, password, code]);
+    },
+    '成功重置密码',
+    [email, password, code],
+  );
   return (
     <form className={classes.form}>
       <TextField

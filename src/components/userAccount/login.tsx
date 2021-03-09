@@ -4,8 +4,7 @@ import { useAccountStyle } from './userAccount';
 import { login } from '../../utils/http/user/login';
 import { userInfoStore } from '../../utils/store/userInfo.store';
 import { Email, Lock } from '@material-ui/icons';
-import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
 
 export interface LoginProp {
   /**
@@ -36,13 +35,14 @@ export default function Login(props: LoginProp): JSX.Element {
   /**
    * 登陆
    * */
-  const [state, fetch] = useAsyncFn(() => {
-    return asyncWithNotify(() => {
-      return login(props.email, props.password);
-    }, '成功登陆').then((value) => {
-      userInfoStore.setData(value);
-    });
-  }, [props.email, props.password]);
+  const [state, fetch] = useAsyncFnWithNotify(
+    async () => {
+      const userInfo = await login(props.email, props.password);
+      userInfoStore.setData(userInfo);
+    },
+    '成功登陆',
+    [props.email, props.password],
+  );
   return (
     <form className={classes.form}>
       <TextField

@@ -5,8 +5,7 @@ import { useShopInfo } from '../utils/store/shopInfo.store';
 import { makeStyles } from '@material-ui/core/styles';
 import { Description, Storefront } from '@material-ui/icons';
 import { updateMerchant } from '../utils/http/shop/updateMerchant';
-import { asyncWithNotify } from '../utils/hook/asyncWithNotify';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFnWithNotify } from '../utils/hook/useAsyncFnWithNotify';
 
 const useStyle = makeStyles((theme) =>
   createStyles({
@@ -51,10 +50,9 @@ export default function ShopSetting(): JSX.Element {
   /**
    * 获取状态和数据
    * */
-  const [state, fetch] = useAsyncFn(async () => {
-    return asyncWithNotify(() => {
-      return updateMerchant(name, info);
-    }, '成功更新').then(() => {
+  const [state, fetch] = useAsyncFnWithNotify(
+    async () => {
+      await updateMerchant(name, info);
       if (shopInfo !== null) {
         setShopInfo({
           ...shopInfo,
@@ -62,8 +60,10 @@ export default function ShopSetting(): JSX.Element {
           info,
         });
       }
-    });
-  }, [name, info, shopInfo]);
+    },
+    '成功更新',
+    [name, info, shopInfo],
+  );
   return (
     <MyDrawer className={classes.main}>
       <form className={classes.form}>

@@ -4,8 +4,7 @@ import { Button, DialogActions, IconButton, InputAdornment, TextField, Tooltip }
 import { AccountCircle, Dialpad, Email, Lock, Send } from '@material-ui/icons';
 import { register } from '../../utils/http/user/register';
 import { sendMailCode } from '../../utils/http/user/sendMailCode';
-import { asyncWithNotify } from '../../utils/hook/asyncWithNotify';
-import { useAsyncFn } from 'react-use';
+import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
 
 export interface RegisterProp {
   /**
@@ -37,21 +36,24 @@ export default function Register(props: RegisterProp): JSX.Element {
   /**
    * 获取注册验证码
    * */
-  const [codeState, sendCode] = useAsyncFn(() => {
-    return asyncWithNotify(() => {
-      return sendMailCode(email);
-    }, '成功发送验证码');
-  }, [email]);
+  const [codeState, sendCode] = useAsyncFnWithNotify(
+    async () => {
+      await sendMailCode(email);
+    },
+    '成功发送验证码',
+    [email],
+  );
   /**
    * 注册
    * */
-  const [registerState, registerFn] = useAsyncFn(() => {
-    return asyncWithNotify(() => {
-      return register(name, password, email, code);
-    }, '成功注册').then(() => {
+  const [registerState, registerFn] = useAsyncFnWithNotify(
+    async () => {
+      await register(name, password, email, code);
       props.onSuccess(email, password);
-    });
-  }, [name, password, email, code]);
+    },
+    '成功注册',
+    [name, password, email, code],
+  );
   return (
     <form className={classes.form}>
       <TextField
