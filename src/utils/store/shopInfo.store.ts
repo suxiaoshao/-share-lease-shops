@@ -1,6 +1,6 @@
 import { Store } from './store';
 import { MerchantInfo } from '../http/shop/getMerchantMyself';
-import { GoodProp } from '../http/good/goodList';
+import { GoodProp } from '../http/goods/goodList';
 
 /**
  * 群居商店信息

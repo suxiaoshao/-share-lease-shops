@@ -1,4 +1,4 @@
-import { GoodType } from '../good/goodList';
+import { GoodType } from '../goods/goodList';
 import { httpPut } from '../main';
 
 export interface UpdateGoodProp {

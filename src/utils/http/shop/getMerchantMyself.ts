@@ -1,4 +1,4 @@
-import { GoodProp } from '../good/goodList';
+import { GoodProp } from '../goods/goodList';
 import { httpGet } from '../main';
 
 export interface MerchantInfo {

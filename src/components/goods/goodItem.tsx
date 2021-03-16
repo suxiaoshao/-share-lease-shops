@@ -10,9 +10,10 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { GoodProp } from '../../utils/http/good/goodList';
+import { GoodProp } from '../../utils/http/goods/goodList';
 import { makeStyles } from '@material-ui/core/styles';
-import { Edit } from '@material-ui/icons';
+import { Edit, ExitToApp } from '@material-ui/icons';
+import { useHistory } from 'react-router';
 import GoodEdit from './goodEdit';
 
 export interface GoodItemProp {
@@ -48,6 +49,7 @@ const useStyle = makeStyles((theme) =>
 export default function GoodItem(props: GoodItemProp): JSX.Element {
   const classes = useStyle();
   const [editOpen, setEditOpen] = React.useState(false);
+  const myHistory = useHistory();
   return (
     <Card className={classes.main}>
       <CardHeader
@@ -55,15 +57,26 @@ export default function GoodItem(props: GoodItemProp): JSX.Element {
         title={props.goodItem.name}
         subheader={props.goodItem.type}
         action={
-          <Tooltip title={'修改'}>
-            <IconButton
-              onClick={() => {
-                setEditOpen(true);
-              }}
-            >
-              <Edit />
-            </IconButton>
-          </Tooltip>
+          <>
+            <Tooltip title={'修改'}>
+              <IconButton
+                onClick={() => {
+                  setEditOpen(true);
+                }}
+              >
+                <Edit />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title={'前往详情页'}>
+              <IconButton
+                onClick={() => {
+                  myHistory.push({ pathname: `/good/${props.goodItem.gid}` });
+                }}
+              >
+                <ExitToApp />
+              </IconButton>
+            </Tooltip>
+          </>
         }
       />
       <CardMedia className={classes.media} image={props.goodItem.picUrl} />

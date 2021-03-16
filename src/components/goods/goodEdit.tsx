@@ -5,7 +5,6 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
   DialogTitle,
   FormControl,
   FormControlLabel,
@@ -15,7 +14,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { GoodProp, GoodType } from '../../utils/http/good/goodList';
+import { GoodProp, GoodType } from '../../utils/http/goods/goodList';
 import { useFormStyle } from '../../utils/hook/useFornStyle';
 import UploadImage from '../common/uploadImage';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,6 +41,11 @@ interface GoodEditProp {
    * 商品信息
    * */
   goodItem: GoodProp;
+
+  /**
+   * 成功修改触发
+   * */
+  onSave?: (newValue: GoodProp) => void;
 }
 
 const useStyle = makeStyles(() =>
@@ -99,6 +103,16 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
         info: newInfo,
       });
       props.onClose();
+      if (props.onSave) {
+        props.onSave({
+          ...props.goodItem,
+          name: newName,
+          type: newType,
+          picUrl: src,
+          price: newPrice,
+          info: newInfo,
+        });
+      }
     },
     '更新信息成功',
     [newImage, newInfo, newName, newPrice, newType, props.goodItem, props.onClose],
@@ -107,7 +121,6 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
     <Dialog maxWidth={'sm'} open={props.open} onClose={props.onClose}>
       <DialogTitle>修改商品信息</DialogTitle>
       <DialogContent>
-        <DialogContentText>修改</DialogContentText>
         <TextField
           label={'商品名'}
           fullWidth

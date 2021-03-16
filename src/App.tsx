@@ -4,6 +4,7 @@ import { MyThemeProvider } from './components/myTheme';
 import HomePage from './views/homePage';
 import ShopSetting from './views/shopSetting';
 import GoodSetting from './views/goodsSetting';
+import GoodInfo from './views/goodInfo';
 
 /**
  * 应用主页,设置路由
@@ -21,6 +22,9 @@ function App(): JSX.Element {
           </Route>
           <Route path={'/goods'} exact>
             <GoodSetting />
+          </Route>
+          <Route path={'/good/:gid'} exact>
+            <GoodInfo />
           </Route>
         </Switch>
       </MyThemeProvider>
