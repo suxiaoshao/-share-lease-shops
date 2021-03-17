@@ -1,16 +1,22 @@
 import { httpGet } from '../main';
 import { GoodProp } from './goodList';
+import { MerchantInfo } from '../shop/getMerchantMyself';
+import { UploadRent } from '../shop/updateRent';
 
 export interface GoodDetail extends GoodProp {
-  prices: GoodPrice[];
+  rents: RentInfo[];
+  merchant: MerchantInfo;
 }
 
-export interface GoodPrice {
-  gpid: number;
+export interface RentInfo extends UploadRent {
+  /**
+   * 租 id
+   * */
+  rid: number;
+  /**
+   * 商品 id
+   * */
   gid: number;
-  time: number;
-  price: number;
-  pledge: number;
 }
 
 /**

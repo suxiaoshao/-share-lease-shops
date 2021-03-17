@@ -1,11 +1,11 @@
 import { Store } from './store';
-import { MerchantInfo } from '../http/shop/getMerchantMyself';
+import { MerchantMyselfInfo } from '../http/shop/getMerchantMyself';
 import { GoodProp } from '../http/goods/goodList';
 
 /**
  * 群居商店信息
  * */
-export class ShopInfoStore extends Store<MerchantInfo | null> {
+export class ShopInfoStore extends Store<MerchantMyselfInfo | null> {
   constructor() {
     super(null);
   }

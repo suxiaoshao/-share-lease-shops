@@ -1,11 +1,14 @@
 import React, { useMemo, useState } from 'react';
 import { Button, createMuiTheme, createStyles, CssBaseline, MuiThemeProvider, Theme } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { zhCN } from 'date-fns/locale';
-import DateFnsUtils from '@date-io/date-fns';
+import 'dayjs/locale/zh-cn';
+import dayjs from 'dayjs';
+import DateFnsUtils from '@date-io/dayjs';
 import { SnackbarProvider } from 'notistack';
 import { Notify } from './common/notify';
 import { makeStyles } from '@material-ui/core/styles';
+
+dayjs.locale('zh-cn');
 
 /**
  * @author sushao
@@ -86,7 +89,7 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
     <MuiThemeProvider theme={themeObject}>
       <CssBaseline />
       {/* 时间组件 */}
-      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={zhCN}>
+      <MuiPickersUtilsProvider utils={DateFnsUtils}>
         {/* 消息条组件 */}
         <SnackbarProvider
           ref={nonstickRef}

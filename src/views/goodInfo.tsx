@@ -6,6 +6,8 @@ import { useAsyncRetry } from 'react-use';
 import { Loading } from '../components/common/loading';
 import { GoodDetailInfo } from '../components/good/goodDetailInfo';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import GoodRent from '../components/good/goodRent';
+import { useForceUpdate } from '../utils/hook/useForceUpdate';
 
 const useStyle = makeStyles(() =>
   createStyles({
@@ -27,11 +29,25 @@ export default function GoodInfo(): JSX.Element {
     return await getGoodDetail(gid);
   }, [gid]);
   const classes = useStyle();
+  const forceUpdate = useForceUpdate();
   return (
     <MyDrawer className={classes.main}>
       <Loading errorChildren={state.error?.message} state={state}>
-        {/* eslint-disable-next-line @typescript-eslint/no-non-null-assertion */}
-        <GoodDetailInfo goodInfo={state.value!} />
+        {state.value !== undefined ? (
+          <>
+            <GoodDetailInfo goodInfo={state.value} />
+            <GoodRent
+              onChangeRents={(newRents) => {
+                if (state.value) {
+                  state.value.rents = newRents;
+                  forceUpdate();
+                }
+              }}
+              rents={state.value.rents}
+              gid={state.value.gid}
+            />
+          </>
+        ) : undefined}
       </Loading>
     </MyDrawer>
   );

@@ -1,13 +1,14 @@
 import React from 'react';
 import { GoodDetail } from '../../utils/http/goods/getGoodDetail';
 import {
+  Avatar,
   Card,
   CardHeader,
-  CardMedia,
   createStyles,
   IconButton,
   List,
   ListItem,
+  ListItemAvatar,
   ListItemIcon,
   ListItemText,
   Tooltip,
@@ -24,20 +25,14 @@ export interface GoodInfoProp {
   goodInfo: GoodDetail;
 }
 
-const useStyle = makeStyles((theme) =>
+export const useGoodCardStyle = makeStyles((theme) =>
   createStyles({
     base: {
       margin: theme.spacing(1.5),
     },
-    list: {
-      display: 'flex',
-    },
-    listName: {
-      flex: '1 1 0',
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
+    image: {
+      width: theme.spacing(16),
+      height: theme.spacing(10),
     },
   }),
 );
@@ -46,7 +41,7 @@ const useStyle = makeStyles((theme) =>
  * 商品信息
  * */
 export function GoodDetailInfo(props: GoodInfoProp): JSX.Element {
-  const classes = useStyle();
+  const classes = useGoodCardStyle();
   const [editOpen, setEditOpen] = React.useState(false);
   const forceUpdate = useForceUpdate();
   return (
@@ -65,11 +60,16 @@ export function GoodDetailInfo(props: GoodInfoProp): JSX.Element {
           </Tooltip>
         }
       />
-      <CardMedia image={props.goodInfo.picUrl} className={classes.media} />
       <List>
         <ListItem>
           <ListItemIcon>商品名</ListItemIcon>
           <ListItemText>{props.goodInfo.name}</ListItemText>
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>图片</ListItemIcon>
+          <ListItemAvatar>
+            <Avatar className={classes.image} variant="rounded" src={props.goodInfo.picUrl} />
+          </ListItemAvatar>
         </ListItem>
         <ListItem>
           <ListItemIcon>描述</ListItemIcon>
@@ -91,11 +91,7 @@ export function GoodDetailInfo(props: GoodInfoProp): JSX.Element {
         }}
         goodItem={props.goodInfo}
         onSave={(newValue) => {
-          props.goodInfo.info = newValue.info;
-          props.goodInfo.name = newValue.name;
-          props.goodInfo.picUrl = newValue.picUrl;
-          props.goodInfo.type = newValue.type;
-          props.goodInfo.price = newValue.price;
+          Object.assign(props.goodInfo, newValue);
           forceUpdate();
         }}
       />
