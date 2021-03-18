@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, List, Typography } from '@material-ui/core';
-import { useGoodCardStyle } from './goodDetailInfo';
-import { RentInfo } from '../../utils/http/goods/getGoodDetail';
+import { useGoodCardStyle } from '../goodDetailInfo';
+import { RentInfo } from '../../../utils/http/goods/getGoodDetail';
 import RendItem from './renrItem';
-import { updateRent } from '../../utils/http/shop/updateRent';
+import { updateRent } from '../../../utils/http/shop/updateRent';
 
 export interface GoodRentProp {
   /**
@@ -35,6 +35,17 @@ export default function GoodRent(props: GoodRentProp): JSX.Element {
             <RendItem
               onDelete={async (rid) => {
                 const newRents = props.rents.filter((value1) => value1.rid !== rid);
+                await updateRent(newRents, props.gid);
+                props.onChangeRents(newRents);
+              }}
+              onChange={async (rent) => {
+                const newRents = props.rents.map((value1) => {
+                  if (value1.rid === rent.rid) {
+                    return rent;
+                  } else {
+                    return value1;
+                  }
+                });
                 await updateRent(newRents, props.gid);
                 props.onChangeRents(newRents);
               }}

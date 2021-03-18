@@ -130,7 +130,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
           }}
           className={classes.input}
         />
-        <PriceInput price={newPrice} onChangePrice={setNewPrice} className={classes.input} />
+        <PriceInput label={'价格'} price={newPrice} onChangePrice={setNewPrice} className={classes.input} />
         <TextField
           label={'商品描述'}
           fullWidth

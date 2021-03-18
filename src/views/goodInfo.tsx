@@ -6,7 +6,7 @@ import { useAsyncRetry } from 'react-use';
 import { Loading } from '../components/common/loading';
 import { GoodDetailInfo } from '../components/good/goodDetailInfo';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import GoodRent from '../components/good/goodRent';
+import GoodRent from '../components/good/rent/goodRent';
 import { useForceUpdate } from '../utils/hook/useForceUpdate';
 
 const useStyle = makeStyles(() =>

@@ -1,11 +1,12 @@
 import { IconButton, ListItem, ListItemSecondaryAction, ListItemText, Tooltip } from '@material-ui/core';
 import dayjs from 'dayjs';
-import { Delete } from '@material-ui/icons';
+import { Delete, Edit } from '@material-ui/icons';
 import React from 'react';
-import { RentInfo } from '../../utils/http/goods/getGoodDetail';
+import { RentInfo } from '../../../utils/http/goods/getGoodDetail';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
+import { useAsyncFnWithNotify } from '../../../utils/hook/useAsyncFnWithNotify';
+import EditRent from './editRent';
 
 dayjs.extend(duration);
 dayjs.extend(relativeTime);
@@ -20,6 +21,11 @@ export interface RentItemProp {
    * 删除
    * */
   onDelete(rid: number): Promise<void>;
+
+  /**
+   * 修改
+   * */
+  onChange(rent: RentInfo): Promise<void>;
 }
 
 /**
@@ -33,19 +39,38 @@ export default function RendItem(props: RentItemProp): JSX.Element {
     '成功删除',
     [props.rent.rid, props.onDelete],
   );
+  const [open, setOpen] = React.useState<boolean>(false);
   return (
     <ListItem>
       <ListItemText
         primary={`${props.rent.rent}元 每 ${dayjs.duration({ seconds: props.rent.time }).humanize()}`}
-        secondary={`保证金 : ${props.rent.pledge}`}
+        secondary={`保证金 : ${props.rent.pledge}元`}
       />
-      <Tooltip title={'删除'}>
-        <ListItemSecondaryAction>
+      <ListItemSecondaryAction>
+        <Tooltip title={'删除'}>
           <IconButton disabled={deleteState.loading} onClick={fn}>
             <Delete />
           </IconButton>
-        </ListItemSecondaryAction>
-      </Tooltip>
+        </Tooltip>
+        <Tooltip title={'修改'}>
+          <IconButton
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            <Edit />
+          </IconButton>
+        </Tooltip>
+      </ListItemSecondaryAction>
+      <EditRent
+        onClose={() => {
+          setOpen(false);
+        }}
+        open={open}
+        title={'修改租金信息'}
+        rent={props.rent}
+        onChange={props.onChange}
+      />
     </ListItem>
   );
 }

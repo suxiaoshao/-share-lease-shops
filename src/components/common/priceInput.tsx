@@ -12,6 +12,11 @@ export interface PriceInputProp extends React.HTMLAttributes<HTMLDivElement> {
    * 修改时
    * */
   onChangePrice(newPrice: number): void;
+
+  /**
+   * 标签信息
+   * */
+  label: string;
 }
 
 const useStyle = makeStyles(() =>
@@ -45,7 +50,7 @@ export default function PriceInput(props: PriceInputProp): JSX.Element {
   return (
     <div {...props} className={`${props.className} ${classes.main}`}>
       <TextField
-        label={'价格(元)'}
+        label={`${props.label}(元)`}
         onChange={(event) => {
           props.onChangePrice((parseInt(event.target.value) || 0) + priceTheDecimal / 100);
         }}
@@ -53,7 +58,7 @@ export default function PriceInput(props: PriceInputProp): JSX.Element {
         className={classes.mainInput}
       />
       <TextField
-        label={'价格(分)'}
+        label={`${props.label}(分)`}
         onChange={(event) => {
           const newPriceTheDecimal = parseInt(event.target.value) / 100 || 0;
           props.onChangePrice(
