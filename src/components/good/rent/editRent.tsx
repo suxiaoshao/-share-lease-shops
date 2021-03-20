@@ -42,6 +42,11 @@ export interface EditRentProp {
    * 修改
    * */
   onChange(rent: RentInfo | UploadRent): Promise<void>;
+
+  /**
+   * 成功信息
+   * */
+  successMessage: string;
 }
 
 /**
@@ -51,7 +56,7 @@ export default function EditRent(props: EditRentProp): JSX.Element {
   const [rent, setRent] = React.useState<number>(1);
   const [pledge, setPledge] = React.useState<number>(1);
   const [timeType, setTimeType] = React.useState<3600 | 86400 | 2592000>(3600);
-  const [timeValue, setTimeValue] = React.useState<number>(0);
+  const [timeValue, setTimeValue] = React.useState<number>(1);
   const classes = useFormStyle();
   React.useEffect(() => {
     if (props.rent !== undefined) {
@@ -77,7 +82,7 @@ export default function EditRent(props: EditRentProp): JSX.Element {
       await props.onChange({ ...props.rent, rent, pledge, time });
       props.onClose();
     },
-    '成功删除',
+    props.successMessage,
     [rent, pledge, time, props.onChange],
   );
   return (

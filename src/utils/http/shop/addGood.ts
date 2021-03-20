@@ -1,18 +1,20 @@
-export interface AddGoodProp {
+import { GoodDetail } from '../goods/getGoodDetail';
+import { httpPost } from '../main';
+import { GoodType } from '../goods/goodList';
+import { UploadRent } from './updateRent';
+
+export interface UploadGood {
   name: string;
-  type: string;
+  type: GoodType;
   picUrl: string;
   info: string;
-  prices: [
-    {
-      time: -1;
-      price: 44.3;
-      pledge: -1.0;
-    },
-    {
-      time: 604800000;
-      price: 12.1;
-      pledge: 50.0;
-    },
-  ];
+  price: number;
+  rents: UploadRent[];
+}
+
+/**
+ * 添加一个新商品
+ * */
+export async function addGood(uploadGood: UploadGood): Promise<GoodDetail> {
+  return await httpPost<UploadGood, GoodDetail>('/merchant/good', uploadGood);
 }

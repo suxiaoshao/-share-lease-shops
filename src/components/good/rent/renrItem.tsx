@@ -70,6 +70,7 @@ export default function RendItem(props: RentItemProp): JSX.Element {
         title={'修改租金信息'}
         rent={props.rent}
         onChange={props.onChange}
+        successMessage={'成功修改'}
       />
     </ListItem>
   );

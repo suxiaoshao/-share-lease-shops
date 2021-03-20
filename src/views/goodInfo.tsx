@@ -7,7 +7,7 @@ import { Loading } from '../components/common/loading';
 import { GoodDetailInfo } from '../components/good/goodDetailInfo';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import GoodRent from '../components/good/rent/goodRent';
-import { useForceUpdate } from '../utils/hook/useForceUpdate';
+import { updateRent } from '../utils/http/shop/updateRent';
 
 const useStyle = makeStyles(() =>
   createStyles({
@@ -22,29 +22,35 @@ const useStyle = makeStyles(() =>
  * */
 export default function GoodInfo(): JSX.Element {
   const myLocation = useLocation();
+  /**
+   * 这个商品 id
+   * */
   const gid = React.useMemo(() => {
     return parseInt(myLocation.pathname.match(/\/good\/(?<gid>\d+)/)?.groups?.['gid'] ?? '-1');
   }, [myLocation.pathname]);
+  /**
+   * 数据
+   * */
   const state = useAsyncRetry(async () => {
     return await getGoodDetail(gid);
   }, [gid]);
   const classes = useStyle();
-  const forceUpdate = useForceUpdate();
+  const [goodInfo, setGoodInfo] = React.useState(state.value);
+  React.useEffect(() => {
+    setGoodInfo(state.value);
+  }, [state.value]);
   return (
     <MyDrawer className={classes.main}>
       <Loading errorChildren={state.error?.message} state={state}>
-        {state.value !== undefined ? (
+        {goodInfo !== undefined ? (
           <>
-            <GoodDetailInfo goodInfo={state.value} />
+            <GoodDetailInfo onUpdate={setGoodInfo} goodInfo={goodInfo} />
             <GoodRent
-              onChangeRents={(newRents) => {
-                if (state.value) {
-                  state.value.rents = newRents;
-                  forceUpdate();
-                }
+              onChange={async (newRents) => {
+                const newGood = await updateRent(newRents, goodInfo.gid);
+                setGoodInfo(newGood);
               }}
-              rents={state.value.rents}
-              gid={state.value.gid}
+              rents={goodInfo.rents}
             />
           </>
         ) : undefined}

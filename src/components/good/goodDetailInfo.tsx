@@ -16,19 +16,24 @@ import {
 import { makeStyles } from '@material-ui/core/styles';
 import { Edit } from '@material-ui/icons';
 import GoodEdit from '../goods/goodEdit';
-import { useForceUpdate } from '../../utils/hook/useForceUpdate';
 
 export interface GoodInfoProp {
   /**
    * 商品详情
    * */
   goodInfo: GoodDetail;
+
+  /**
+   * 更新信息的触发器
+   * */
+  onUpdate(newGood: GoodDetail): void;
 }
 
 export const useGoodCardStyle = makeStyles((theme) =>
   createStyles({
     base: {
       margin: theme.spacing(1.5),
+      width: `calc(100% - ${theme.spacing(3)}px)`,
     },
     image: {
       width: theme.spacing(16),
@@ -43,7 +48,6 @@ export const useGoodCardStyle = makeStyles((theme) =>
 export function GoodDetailInfo(props: GoodInfoProp): JSX.Element {
   const classes = useGoodCardStyle();
   const [editOpen, setEditOpen] = React.useState(false);
-  const forceUpdate = useForceUpdate();
   return (
     <Card className={classes.base}>
       <CardHeader
@@ -90,10 +94,7 @@ export function GoodDetailInfo(props: GoodInfoProp): JSX.Element {
           setEditOpen(false);
         }}
         goodItem={props.goodInfo}
-        onSave={(newValue) => {
-          Object.assign(props.goodInfo, newValue);
-          forceUpdate();
-        }}
+        onSave={props.onUpdate}
       />
     </Card>
   );

@@ -25,6 +25,7 @@ import { shopInfoStore } from '../../utils/store/shopInfo.store';
 import { upload } from '../../utils/http/uploadImg';
 import { baseUrl } from '../../utils/http/main';
 import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
+import { GoodDetail } from '../../utils/http/goods/getGoodDetail';
 
 interface GoodEditProp {
   /**
@@ -45,10 +46,10 @@ interface GoodEditProp {
   /**
    * 成功修改触发
    * */
-  onSave?: (newValue: GoodProp) => void;
+  onSave?: (newValue: GoodDetail) => void;
 }
 
-const useStyle = makeStyles(() =>
+export const useImageStyle = makeStyles(() =>
   createStyles({
     image: {
       width: 160,
@@ -59,7 +60,7 @@ const useStyle = makeStyles(() =>
 
 export default function GoodEdit(props: GoodEditProp): JSX.Element {
   const classes = useFormStyle();
-  const imageClasses = useStyle();
+  const imageClasses = useImageStyle();
   /**
    * 新商品名字
    * */
@@ -93,25 +94,17 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
         const file = await getFileFromUrl(newImage);
         src = `${baseUrl}/file/${await upload(file)}`;
       }
-      await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
-      shopInfoStore.updateGood({
-        ...props.goodItem,
-        name: newName,
-        type: newType,
-        picUrl: src,
-        price: newPrice,
-        info: newInfo,
-      });
+      const newGood = await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
+      /**
+       * 更新 shopInfo 的 good 数据
+       * */
+      shopInfoStore.updateGood(newGood);
       props.onClose();
+      /**
+       * 触发保存响应
+       * */
       if (props.onSave) {
-        props.onSave({
-          ...props.goodItem,
-          name: newName,
-          type: newType,
-          picUrl: src,
-          price: newPrice,
-          info: newInfo,
-        });
+        props.onSave(newGood);
       }
     },
     '更新信息成功',

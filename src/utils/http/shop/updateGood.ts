@@ -1,5 +1,6 @@
 import { GoodType } from '../goods/goodList';
 import { httpPut } from '../main';
+import { GoodDetail } from '../goods/getGoodDetail';
 
 export interface UpdateGoodProp {
   /**
@@ -35,8 +36,8 @@ export async function updateGood(
   picUrl: string,
   price: number,
   info: string,
-): Promise<undefined> {
-  return await httpPut<UpdateGoodProp, undefined>('/merchant/good', {
+): Promise<GoodDetail> {
+  return await httpPut<UpdateGoodProp, GoodDetail>('/merchant/good', {
     gid,
     name,
     type,

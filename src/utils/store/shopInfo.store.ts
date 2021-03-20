@@ -10,6 +10,10 @@ export class ShopInfoStore extends Store<MerchantMyselfInfo | null> {
     super(null);
   }
 
+  /**
+   * 更新 good 数据
+   * @param newGood 新的一个 good 数据
+   * */
   public updateGood(newGood: GoodProp): void {
     if (this.data !== null) {
       const changeIndex = this.data.goods.findIndex((value) => {
@@ -18,7 +22,7 @@ export class ShopInfoStore extends Store<MerchantMyselfInfo | null> {
       if (changeIndex !== -1) {
         this.data.goods[changeIndex] = newGood;
       } else {
-        this.data?.goods.push(newGood);
+        this.data.goods.push(newGood);
       }
       this.setData({ ...this.data });
     }
