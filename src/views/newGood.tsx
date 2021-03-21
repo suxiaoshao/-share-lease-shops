@@ -10,6 +10,9 @@ import { Button } from '@material-ui/core';
 import { useAsyncFnWithNotify } from '../utils/hook/useAsyncFnWithNotify';
 import { shopInfoStore } from '../utils/store/shopInfo.store';
 import { useHistory } from 'react-router';
+import { getFileFromUrl } from '../utils/getFilefromUrl';
+import { baseUrl } from '../utils/http/main';
+import { upload } from '../utils/http/uploadImg';
 
 const useStyle = makeStyles(() =>
   createStyles({
@@ -50,6 +53,11 @@ export default function NewGood(): JSX.Element {
   const myHistory = useHistory();
   const [state, fn] = useAsyncFnWithNotify(
     async () => {
+      /**
+       * 获取图片 url
+       * */
+      const file = await getFileFromUrl(newGood.picUrl);
+      newGood.picUrl = `${baseUrl}/file/${await upload(file)}`;
       const resultGood = await addGood(newGood);
       shopInfoStore.updateGood(resultGood);
       myHistory.push({ pathname: `/good/${resultGood.gid}` });

@@ -41,7 +41,7 @@ export default function GoodInfo(): JSX.Element {
   }, [state.value]);
   return (
     <MyDrawer className={classes.main}>
-      <Loading errorChildren={state.error?.message} state={state}>
+      <Loading state={state}>
         {goodInfo !== undefined ? (
           <>
             <GoodDetailInfo onUpdate={setGoodInfo} goodInfo={goodInfo} />

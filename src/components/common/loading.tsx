@@ -1,7 +1,10 @@
 import React from 'react';
 import { Skeleton } from '@material-ui/lab';
-import { createStyles } from '@material-ui/core';
+import { createStyles, IconButton, Tooltip, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import ErrorImage from '../../assets/monkey.png';
+import { getClassName } from '../../utils/getClassName';
+import { Refresh } from '@material-ui/icons';
 
 type LoadingState<T> =
   | {
@@ -38,13 +41,9 @@ export interface LoadingProp<T> {
    * 成功组件
    * */
   children: React.ReactNode;
-  /**
-   * 失败组件
-   * */
-  errorChildren: React.ReactNode;
 }
 
-const useStyle = makeStyles(() =>
+const useStyle = makeStyles((theme) =>
   createStyles({
     main: {
       width: '100%',
@@ -54,6 +53,14 @@ const useStyle = makeStyles(() =>
     },
     all: {
       flex: '1 1 0',
+    },
+    error: {
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    image: {
+      width: theme.spacing(30),
+      marginBottom: theme.spacing(5),
     },
   }),
 );
@@ -72,7 +79,17 @@ export function Loading<T>(props: LoadingProp<T>): JSX.Element {
           <Skeleton variant="rect" className={classes.all} />
         </div>
       ) : props.state.error ? (
-        props.errorChildren
+        <div className={getClassName(classes.main, classes.error)}>
+          <img alt={'错误'} className={classes.image} src={ErrorImage} />
+          <Typography variant={'h6'} color={'secondary'}>
+            {props.state.error.message}
+            <Tooltip title={'刷新'}>
+              <IconButton onClick={props.state.retry} color={'secondary'}>
+                <Refresh />
+              </IconButton>
+            </Tooltip>
+          </Typography>
+        </div>
       ) : (
         props.children
       )}
