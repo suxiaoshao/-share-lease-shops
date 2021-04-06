@@ -4,9 +4,9 @@ import { useLocation } from 'react-router';
 import { getGoodDetail } from '../utils/http/goods/getGoodDetail';
 import { useAsyncRetry } from 'react-use';
 import { Loading } from '../components/common/loading';
-import { GoodDetailInfo } from '../components/good/goodDetailInfo';
+import { GoodDetailInfo } from '../components/page/good/goodDetailInfo';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import GoodRent from '../components/good/rent/goodRent';
+import GoodRent from '../components/page/good/rent/goodRent';
 import { updateRent } from '../utils/http/shop/updateRent';
 
 const useStyle = makeStyles(() =>

@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from '@material-ui/core';
-import { GoodProp } from '../../utils/http/goods/goodList';
+import { GoodProp } from '../../../utils/http/goods/goodList';
 import { makeStyles } from '@material-ui/core/styles';
 import { Edit, ExitToApp } from '@material-ui/icons';
 import { useHistory } from 'react-router';

@@ -12,12 +12,12 @@ import {
   Typography,
 } from '@material-ui/core';
 import { useGoodCardStyle } from '../good/goodDetailInfo';
-import PriceInput from '../common/priceInput';
-import UploadImage from '../common/uploadImage';
-import { useFormStyle } from '../../utils/hook/useFornStyle';
+import PriceInput from '../../common/priceInput';
+import UploadImage from '../../common/uploadImage';
+import { useFormStyle } from '../../../utils/hook/useFornStyle';
 import { useImageStyle } from '../goods/goodEdit';
-import { UploadGood } from '../../utils/http/shop/addGood';
-import { GoodType } from '../../utils/http/goods/goodList';
+import { UploadGood } from '../../../utils/http/shop/addGood';
+import { GoodType } from '../../../utils/http/goods/goodList';
 
 export interface NewGoodDetailProp {
   /**

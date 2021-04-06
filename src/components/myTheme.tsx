@@ -7,6 +7,7 @@ import DateFnsUtils from '@date-io/dayjs';
 import { SnackbarProvider } from 'notistack';
 import { Notify } from './common/notify';
 import { makeStyles } from '@material-ui/core/styles';
+import { zhCN } from '@material-ui/core/locale';
 
 dayjs.locale('zh-cn');
 
@@ -64,23 +65,26 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
    * 主题对象
    * */
   const themeObject = useMemo<Theme>(() => {
-    return createMuiTheme({
-      palette: isDark
-        ? {
-            type: 'dark',
-            primary: {
-              main: '#90caf9',
-              light: '#a6d4fa',
-              dark: '#648dae',
-            },
-            secondary: {
-              main: '#f48fb1',
-              light: '#f6a5c0',
-              dark: '#aa647b',
-            },
-          }
-        : undefined,
-    });
+    return createMuiTheme(
+      {
+        palette: isDark
+          ? {
+              type: 'dark',
+              primary: {
+                main: '#90caf9',
+                light: '#a6d4fa',
+                dark: '#648dae',
+              },
+              secondary: {
+                main: '#f48fb1',
+                light: '#f6a5c0',
+                dark: '#aa647b',
+              },
+            }
+          : undefined,
+      },
+      zhCN,
+    );
   }, [isDark]);
   const nonstickRef = React.useRef<SnackbarProvider>(null);
   useStyle({ isDark });

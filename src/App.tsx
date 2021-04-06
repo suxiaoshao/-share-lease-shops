@@ -6,6 +6,7 @@ import ShopSetting from './views/shopSetting';
 import GoodSetting from './views/goodsSetting';
 import GoodInfo from './views/goodInfo';
 import NewGood from './views/newGood';
+import Orders from './views/orders';
 
 /**
  * 应用主页,设置路由
@@ -29,6 +30,9 @@ function App(): JSX.Element {
           </Route>
           <Route path={'/good/:gid'} exact>
             <GoodInfo />
+          </Route>
+          <Route path={'/orders'} exact>
+            <Orders />
           </Route>
         </Switch>
       </MyThemeProvider>

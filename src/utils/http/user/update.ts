@@ -1,5 +1,5 @@
 import { httpPost } from '../main';
-import { UserInfo } from './getInfo';
+import { UserDetail } from './getInfo';
 
 export interface UserUpdateInfo {
   username: string;
@@ -7,6 +7,6 @@ export interface UserUpdateInfo {
   avatar: string;
 }
 
-export async function update(username: string, phone: string, avatar: string): Promise<UserInfo> {
-  return await httpPost<UserUpdateInfo, UserInfo>('/user/update', { username, phone, avatar });
+export async function update(username: string, phone: string, avatar: string): Promise<UserDetail> {
+  return await httpPost<UserUpdateInfo, UserDetail>('/user/update', { username, phone, avatar });
 }

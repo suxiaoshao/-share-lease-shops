@@ -2,7 +2,7 @@ import React from 'react';
 import MyDrawer from '../components/myDrawer';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useShopGoods } from '../utils/store/shopInfo.store';
-import GoodItem from '../components/goods/goodItem';
+import GoodItem from '../components/page/goods/goodItem';
 import { List } from '@material-ui/core';
 
 const useStyle = makeStyles(() =>

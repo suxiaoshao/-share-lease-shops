@@ -1,5 +1,5 @@
 import { Store } from './store';
-import { UserInfo } from '../http/user/getInfo';
+import { UserDetail } from '../http/user/getInfo';
 import { getMerchantMyself } from '../http/shop/getMerchantMyself';
 import { shopInfoStore } from './shopInfo.store';
 import { asyncWithNotify } from '../hook/asyncWithNotify';
@@ -7,12 +7,12 @@ import { asyncWithNotify } from '../hook/asyncWithNotify';
 /**
  * 全局用户信息
  * */
-export class UserInfoStore extends Store<UserInfo | null> {
+export class UserInfoStore extends Store<UserDetail | null> {
   constructor() {
     super(null);
   }
 
-  public setData(newData: UserInfo | null): void {
+  public setData(newData: UserDetail | null): void {
     if (newData === null) {
       window.localStorage.removeItem('userInfo');
     } else {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Avatar, Card, CardHeader } from '@material-ui/core';
-import { useShopInfo } from '../../utils/store/shopInfo.store';
+import { useShopInfo } from '../../../utils/store/shopInfo.store';
 
 /**
  * 商店信息展示

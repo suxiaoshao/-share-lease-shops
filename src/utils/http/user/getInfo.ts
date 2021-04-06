@@ -4,13 +4,16 @@ export interface UserInfo {
   uid: number;
   email: string;
   username: string;
-  password: string;
   phone: string | null;
   level: number;
   avatar: string | null;
+}
+
+export interface UserDetail extends UserInfo {
+  password: string;
   accessToken: string;
 }
 
-export async function getInfo(uid: string): Promise<UserInfo> {
-  return await httpGet<undefined, UserInfo>(`/user/getInfo?uid=${uid}`, undefined);
+export async function getInfo(uid: string): Promise<UserDetail> {
+  return await httpGet<undefined, UserDetail>(`/user/getInfo?uid=${uid}`, undefined);
 }

@@ -2,10 +2,10 @@ import { IconButton, ListItem, ListItemSecondaryAction, ListItemText, Tooltip } 
 import dayjs from 'dayjs';
 import { Delete, Edit } from '@material-ui/icons';
 import React from 'react';
-import { RentInfo } from '../../../utils/http/goods/getGoodDetail';
+import { RentInfo } from '../../../../utils/http/goods/getGoodDetail';
 import duration from 'dayjs/plugin/duration';
 import relativeTime from 'dayjs/plugin/relativeTime';
-import { useAsyncFnWithNotify } from '../../../utils/hook/useAsyncFnWithNotify';
+import { useAsyncFnWithNotify } from '../../../../utils/hook/useAsyncFnWithNotify';
 import EditRent from './editRent';
 
 dayjs.extend(duration);

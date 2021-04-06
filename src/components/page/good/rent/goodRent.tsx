@@ -1,9 +1,9 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, IconButton, List, Tooltip, Typography } from '@material-ui/core';
 import { useGoodCardStyle } from '../goodDetailInfo';
-import { RentInfo } from '../../../utils/http/goods/getGoodDetail';
+import { RentInfo } from '../../../../utils/http/goods/getGoodDetail';
 import RendItem from './renrItem';
-import { UploadRent } from '../../../utils/http/shop/updateRent';
+import { UploadRent } from '../../../../utils/http/shop/updateRent';
 import { Add } from '@material-ui/icons';
 import EditRent from './editRent';
 

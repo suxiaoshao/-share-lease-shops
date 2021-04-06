@@ -12,11 +12,11 @@ import {
   RadioGroup,
   Slider,
 } from '@material-ui/core';
-import { RentInfo } from '../../../utils/http/goods/getGoodDetail';
-import PriceInput from '../../common/priceInput';
-import { useFormStyle } from '../../../utils/hook/useFornStyle';
-import { useAsyncFnWithNotify } from '../../../utils/hook/useAsyncFnWithNotify';
-import { UploadRent } from '../../../utils/http/shop/updateRent';
+import { RentInfo } from '../../../../utils/http/goods/getGoodDetail';
+import PriceInput from '../../../common/priceInput';
+import { useFormStyle } from '../../../../utils/hook/useFornStyle';
+import { useAsyncFnWithNotify } from '../../../../utils/hook/useAsyncFnWithNotify';
+import { UploadRent } from '../../../../utils/http/shop/updateRent';
 
 export interface EditRentProp {
   /**

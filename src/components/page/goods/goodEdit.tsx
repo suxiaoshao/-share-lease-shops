@@ -14,18 +14,18 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import { GoodProp, GoodType } from '../../utils/http/goods/goodList';
-import { useFormStyle } from '../../utils/hook/useFornStyle';
-import UploadImage from '../common/uploadImage';
+import { GoodProp, GoodType } from '../../../utils/http/goods/goodList';
+import { useFormStyle } from '../../../utils/hook/useFornStyle';
+import UploadImage from '../../common/uploadImage';
 import { makeStyles } from '@material-ui/core/styles';
-import { getFileFromUrl } from '../../utils/getFilefromUrl';
-import { updateGood } from '../../utils/http/shop/updateGood';
-import PriceInput from '../common/priceInput';
-import { shopInfoStore } from '../../utils/store/shopInfo.store';
-import { upload } from '../../utils/http/uploadImg';
-import { baseUrl } from '../../utils/http/main';
-import { useAsyncFnWithNotify } from '../../utils/hook/useAsyncFnWithNotify';
-import { GoodDetail } from '../../utils/http/goods/getGoodDetail';
+import { getFileFromUrl } from '../../../utils/getFilefromUrl';
+import { updateGood } from '../../../utils/http/shop/updateGood';
+import PriceInput from '../../common/priceInput';
+import { shopInfoStore } from '../../../utils/store/shopInfo.store';
+import { upload } from '../../../utils/http/uploadImg';
+import { baseUrl } from '../../../utils/http/main';
+import { useAsyncFnWithNotify } from '../../../utils/hook/useAsyncFnWithNotify';
+import { GoodDetail } from '../../../utils/http/goods/getGoodDetail';
 
 interface GoodEditProp {
   /**

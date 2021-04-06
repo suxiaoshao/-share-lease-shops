@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoodDetail } from '../../utils/http/goods/getGoodDetail';
+import { GoodDetail } from '../../../utils/http/goods/getGoodDetail';
 import {
   Avatar,
   Card,

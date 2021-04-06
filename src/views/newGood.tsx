@@ -1,10 +1,10 @@
 import React from 'react';
 import MyDrawer from '../components/myDrawer';
-import NewGoodDetail from '../components/newGood/newGoodDetail';
+import NewGoodDetail from '../components/page/newGood/newGoodDetail';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { addGood, UploadGood } from '../utils/http/shop/addGood';
 import defaultImage from '../assets/defautGood.png';
-import GoodRent from '../components/good/rent/goodRent';
+import GoodRent from '../components/page/good/rent/goodRent';
 import { RentInfo } from '../utils/http/goods/getGoodDetail';
 import { Button } from '@material-ui/core';
 import { useAsyncFnWithNotify } from '../utils/hook/useAsyncFnWithNotify';
@@ -13,6 +13,7 @@ import { useHistory } from 'react-router';
 import { getFileFromUrl } from '../utils/getFilefromUrl';
 import { baseUrl } from '../utils/http/main';
 import { upload } from '../utils/http/uploadImg';
+import { GoodType } from '../utils/http/goods/goodList';
 
 const useStyle = makeStyles(() =>
   createStyles({
@@ -31,7 +32,7 @@ export default function NewGood(): JSX.Element {
   const [newGood, setNewGood] = React.useState<UploadGood>({
     name: '名字',
     info: '描述',
-    type: '电子器件',
+    type: GoodType.electronic,
     picUrl: defaultImage,
     price: 0,
     rents: [],

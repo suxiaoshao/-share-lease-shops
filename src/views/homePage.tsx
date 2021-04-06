@@ -1,6 +1,6 @@
 import React from 'react';
 import MyDrawer from '../components/myDrawer';
-import ShopInfoView from '../components/home/shopInfoView';
+import ShopInfoView from '../components/page/home/shopInfoView';
 
 /**
  * 主页

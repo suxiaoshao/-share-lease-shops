@@ -1,6 +1,8 @@
 import { httpGet } from '../main';
 
-export type GoodType = '电子器件';
+export enum GoodType {
+  electronic = '电子器件',
+}
 
 export interface GoodProp {
   /**
