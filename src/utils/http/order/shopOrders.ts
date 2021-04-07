@@ -14,7 +14,8 @@ export type StatusType =
   | 'payed'
   | 'overtime'
   | 'expired'
-  | 'revert';
+  | 'revert'
+  | 'waiting';
 
 export interface OrderDetail {
   /**

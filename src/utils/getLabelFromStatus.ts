@@ -24,5 +24,7 @@ export function getLabelFromStatus(status: StatusType): string {
       return '用户付款中';
     case 'revert':
       return '用户租用退回待商家确认';
+    case 'waiting':
+      return '用户收货待处理';
   }
 }
