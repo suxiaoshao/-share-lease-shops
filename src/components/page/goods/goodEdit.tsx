@@ -143,6 +143,9 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
             }}
           >
             <FormControlLabel value="电子器件" control={<Radio />} label="电子器件" />
+            <FormControlLabel value="服装" control={<Radio />} label="服装" />
+            <FormControlLabel value="图书音像" control={<Radio />} label="图书音像" />
+            <FormControlLabel value="账号数据" control={<Radio />} label="账号数据" />
           </RadioGroup>
         </FormControl>
         <FormControl fullWidth className={classes.input}>

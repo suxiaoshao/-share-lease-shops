@@ -2,6 +2,9 @@ import { httpGet } from '../main';
 
 export enum GoodType {
   electronic = '电子器件',
+  cloth = '服装',
+  book = '图书音像',
+  data = '账号数据',
 }
 
 export interface GoodProp {
