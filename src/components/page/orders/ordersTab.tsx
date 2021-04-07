@@ -38,12 +38,12 @@ export default function OrdersTab(props: OrdersTabProp): JSX.Element {
         <Tab value={'overtime'} label={'用户付款超时'} />
         <Tab value={'payed'} label={'待商家发货'} />
         <Tab value={'expressing'} label={'商家已发货'} />
-        <Tab value={'abandon'} label={'用户退货中'} />
+        <Tab value={'abandon'} label={'用户退货待商家确认收获'} />
         <Tab value={'finish'} label={'已完成'} />
         <Tab value={'abandoned'} label={'退货已完成'} />
         <Tab value={'expressed'} label={'用户租用中'} />
         <Tab value={'expired'} label={'用户租用超时'} />
-        <Tab value={'revert'} label={'用户租用退回中'} />
+        <Tab value={'revert'} label={'用户租用退回待商家确认收获'} />
       </Tabs>
     </Paper>
   );

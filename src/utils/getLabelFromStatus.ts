@@ -3,7 +3,7 @@ import { StatusType } from './http/order/shopOrders';
 export function getLabelFromStatus(status: StatusType): string {
   switch (status) {
     case 'abandon':
-      return '用户退货中';
+      return '用户退货待商家确认';
     case 'abandoned':
       return '退货已完成';
     case 'create':
@@ -23,6 +23,6 @@ export function getLabelFromStatus(status: StatusType): string {
     case 'paying':
       return '用户付款中';
     case 'revert':
-      return '用户租用退回中';
+      return '用户租用退回待商家确认';
   }
 }

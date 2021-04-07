@@ -5,10 +5,6 @@ import OrdersTab from '../components/page/orders/ordersTab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useAsyncFnWithNotify } from '../utils/hook/useAsyncFnWithNotify';
 import {
-  Avatar,
-  ListItem,
-  ListItemAvatar,
-  ListItemText,
   Paper,
   Table,
   TableBody,
@@ -19,8 +15,7 @@ import {
   TableRow,
 } from '@material-ui/core';
 import { Loading } from '../components/common/loading';
-import { getLabelFromStatus } from '../utils/getLabelFromStatus';
-import dayjs from 'dayjs';
+import OrderItem from '../components/page/orders/orderItem';
 
 const useClasses = makeStyles((theme) =>
   createStyles({
@@ -89,39 +84,7 @@ export default function Orders(): JSX.Element {
             </TableHead>
             <TableBody>
               {state.value?.list.map((orderItem) => (
-                <TableRow
-                  key={orderItem.oid}
-                  onClick={() => {
-                    console.log(orderItem);
-                  }}
-                >
-                  <TableCell padding={'none'}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src={orderItem.user.avatar ?? ''} />
-                      </ListItemAvatar>
-                      <ListItemText primary={orderItem.user.username} secondary={orderItem.user.email} />
-                    </ListItem>
-                  </TableCell>
-                  <TableCell padding={'none'}>
-                    <ListItem>
-                      <ListItemAvatar>
-                        <Avatar src={orderItem.good.picUrl} />
-                      </ListItemAvatar>
-                      <ListItemText primary={orderItem.good.name} secondary={`x${orderItem.num}`} />
-                    </ListItem>
-                  </TableCell>
-                  <TableCell>{getLabelFromStatus(orderItem.status)}</TableCell>
-                  <TableCell>
-                    {orderItem.money} / {orderItem.pledge < 0 ? '无' : orderItem.pledge}
-                  </TableCell>
-                  <TableCell>{dayjs(orderItem.createTime).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
-                  <TableCell padding={'none'}>
-                    <ListItem>
-                      <ListItemText primary={orderItem.name} secondary={`${orderItem.address} ${orderItem.phone}`} />
-                    </ListItem>
-                  </TableCell>
-                </TableRow>
+                <OrderItem onChange={fn} key={orderItem.oid} order={orderItem} />
               ))}
             </TableBody>
             <TablePagination

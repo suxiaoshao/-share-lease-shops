@@ -87,7 +87,10 @@ export interface OrderSearchResult {
 }
 
 /**
- * 获取订单
+ * 获取订单]
+ * @param pageSize 页面大小
+ * @param status 状态
+ * @param pageNum 页数
  * */
 export async function getShopOrders(
   pageNum: number,
