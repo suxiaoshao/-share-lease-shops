@@ -16,6 +16,7 @@ import {
 } from '@material-ui/core';
 import { Loading } from '../components/common/loading';
 import OrderItem from '../components/page/orders/orderItem';
+import { shopStatusStore } from '../utils/store/shopStatus.store';
 
 const useClasses = makeStyles((theme) =>
   createStyles({
@@ -84,7 +85,14 @@ export default function Orders(): JSX.Element {
             </TableHead>
             <TableBody>
               {state.value?.list.map((orderItem) => (
-                <OrderItem onChange={fn} key={orderItem.oid} order={orderItem} />
+                <OrderItem
+                  onChange={() => {
+                    fn().then();
+                    shopStatusStore.updateFromServer();
+                  }}
+                  key={orderItem.oid}
+                  order={orderItem}
+                />
               ))}
             </TableBody>
             <TablePagination

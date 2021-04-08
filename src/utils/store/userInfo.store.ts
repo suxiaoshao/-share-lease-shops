@@ -1,8 +1,7 @@
 import { Store } from './store';
 import { UserDetail } from '../http/user/getInfo';
-import { getMerchantMyself } from '../http/shop/getMerchantMyself';
 import { shopInfoStore } from './shopInfo.store';
-import { asyncWithNotify } from '../hook/asyncWithNotify';
+import { shopStatusStore } from './shopStatus.store';
 
 /**
  * 全局用户信息
@@ -22,10 +21,14 @@ export class UserInfoStore extends Store<UserDetail | null> {
   }
 }
 
+/**
+ * 用户信息实例
+ * */
 export const userInfoStore = new UserInfoStore();
 
-export const useUserInfo = userInfoStore.getDataFunc();
-
+/**
+ * 用户是否登录的 hook 函数
+ * */
 export const useIsLogin = userInfoStore.getComputeFunc(
   (data) => data !== null,
   (newComputeData, preData) => preData,
@@ -36,11 +39,11 @@ export const useIsLogin = userInfoStore.getComputeFunc(
  * */
 userInfoStore.addListen((newValue) => {
   if (newValue !== null) {
-    asyncWithNotify(getMerchantMyself, '成功获取商店信息').then((value) => {
-      shopInfoStore.setData(value);
-    });
+    shopInfoStore.updateFromServer();
+    shopStatusStore.updateFromServer();
   } else {
-    shopInfoStore.setData(null);
+    shopInfoStore.initData();
+    shopStatusStore.initData();
   }
 });
 

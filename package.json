@@ -18,6 +18,7 @@
     "@material-ui/pickers": "^3.2.10",
     "axios": "^0.21.1",
     "dayjs": "^1.10.4",
+    "echarts-for-react": "^3.0.1",
     "fontsource-roboto": "^4.0.0",
     "notistack": "^1.0.4",
     "react": "^17.0.0",

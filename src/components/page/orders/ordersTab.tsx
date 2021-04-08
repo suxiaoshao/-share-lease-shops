@@ -21,7 +21,7 @@ export interface OrdersTabProp {
 
 export default function OrdersTab(props: OrdersTabProp): JSX.Element {
   return (
-    <Paper className={props.className}>
+    <Paper className={props.className} square>
       <Tabs
         value={props.tabValue}
         onChange={(event, value: StatusType | null) => {

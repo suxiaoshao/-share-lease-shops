@@ -8,6 +8,7 @@ import { SnackbarProvider } from 'notistack';
 import { Notify } from './common/notify';
 import { makeStyles } from '@material-ui/core/styles';
 import { zhCN } from '@material-ui/core/locale';
+import { IsDarkContext } from '../utils/hook/useIsDark';
 
 dayjs.locale('zh-cn');
 
@@ -60,7 +61,9 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
   /**
    * 判断在 utools 是否是黑色
    * */
-  const [isDark] = useState<boolean>(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [isDark, setIsDark] = useState<boolean>(
+    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches,
+  );
   /**
    * 主题对象
    * */
@@ -93,25 +96,27 @@ export function MyThemeProvider(props: MyThemeProp): JSX.Element {
     <MuiThemeProvider theme={themeObject}>
       <CssBaseline />
       {/* 时间组件 */}
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        {/* 消息条组件 */}
-        <SnackbarProvider
-          ref={nonstickRef}
-          maxSnack={5}
-          action={(key) => (
-            <Button
-              onClick={() => {
-                nonstickRef.current?.closeSnackbar(key);
-              }}
-            >
-              关闭
-            </Button>
-          )}
-        >
-          <Notify />
-          {props.children}
-        </SnackbarProvider>
-      </MuiPickersUtilsProvider>
+      <IsDarkContext.Provider value={{ isDark, setIsDark }}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          {/* 消息条组件 */}
+          <SnackbarProvider
+            ref={nonstickRef}
+            maxSnack={5}
+            action={(key) => (
+              <Button
+                onClick={() => {
+                  nonstickRef.current?.closeSnackbar(key);
+                }}
+              >
+                关闭
+              </Button>
+            )}
+          >
+            <Notify />
+            {props.children}
+          </SnackbarProvider>
+        </MuiPickersUtilsProvider>
+      </IsDarkContext.Provider>
     </MuiThemeProvider>
   );
 }

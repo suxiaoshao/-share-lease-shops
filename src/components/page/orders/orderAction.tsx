@@ -91,7 +91,7 @@ export default function OrderAction(props: OrderActionProp): JSX.Element {
     case 'revert':
       return (
         <TableCell padding={'none'}>
-          <Button disabled={onMailState.loading} onClick={confirmedOnMailFn}>
+          <Button color={'primary'} disabled={onMailState.loading} onClick={confirmedOnMailFn}>
             确认用户租用退回
           </Button>
         </TableCell>

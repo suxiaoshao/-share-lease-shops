@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Avatar,
+  Badge,
   createStyles,
   Divider,
   Drawer,
@@ -10,12 +11,14 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { Add, ExitToApp, Home, ListAlt, Settings, ShoppingBasket } from '@material-ui/icons';
+import { Add, Brightness4, Brightness7, ExitToApp, Home, ListAlt, Settings, ShoppingBasket } from '@material-ui/icons';
 import { useHistory, useLocation } from 'react-router';
 import { makeStyles } from '@material-ui/core/styles';
 import UserAccount from './userAccount/userAccount';
 import { useShopInfo } from '../utils/store/shopInfo.store';
 import { userInfoStore } from '../utils/store/userInfo.store';
+import { useStatusTotalNum } from '../utils/store/shopStatus.store';
+import { IsDarkContext } from '../utils/hook/useIsDark';
 
 const useStyle = makeStyles(() => {
   const listWidth = 240;
@@ -117,6 +120,8 @@ interface MyDrawerProps {
 export default function MyDrawer(props: MyDrawerProps): JSX.Element {
   const classes = useStyle();
   const [shopInfo] = useShopInfo();
+  const [statusTotalNum] = useStatusTotalNum();
+  const { isDark, setIsDark } = React.useContext(IsDarkContext);
   return (
     <div className={classes.page}>
       <Drawer
@@ -146,7 +151,15 @@ export default function MyDrawer(props: MyDrawerProps): JSX.Element {
           <MyRouterListItem icon={<Settings />} text={'商店设置'} path={'/setting'} />
           <MyRouterListItem icon={<ShoppingBasket />} text={'商品设置'} path={'/goods'} />
           <MyRouterListItem icon={<Add />} text={'添加商品'} path={'/good/new'} />
-          <MyRouterListItem icon={<ListAlt />} text={'订单'} path={'/orders'} />
+          <MyRouterListItem
+            icon={
+              <Badge badgeContent={statusTotalNum} color={'secondary'}>
+                <ListAlt />
+              </Badge>
+            }
+            text={'订单'}
+            path={'/orders'}
+          />
         </List>
         <Divider />
         <List component="nav">
@@ -160,6 +173,15 @@ export default function MyDrawer(props: MyDrawerProps): JSX.Element {
               <ExitToApp />
             </ListItemIcon>
             <ListItemText>退出登陆</ListItemText>
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => {
+              setIsDark(!isDark);
+            }}
+          >
+            <ListItemIcon>{isDark ? <Brightness4 /> : <Brightness7 />}</ListItemIcon>
+            <ListItemText>{isDark ? '深色模式' : '明亮模式'}</ListItemText>
           </ListItem>
         </List>
       </Drawer>
