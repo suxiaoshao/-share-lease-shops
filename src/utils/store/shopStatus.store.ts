@@ -38,3 +38,7 @@ export const useStatusTotalNum = shopStatusStore.getComputeFunc(
   (shopStatus) => shopStatus.abandonNum + shopStatus.payedNum + shopStatus.revertNum,
   (totalNum, preData) => preData,
 );
+/**
+ * 获取商店状态全部数据
+ * */
+export const useStatusData = shopStatusStore.getDataFunc();

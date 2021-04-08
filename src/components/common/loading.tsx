@@ -74,7 +74,6 @@ export function Loading<T>(props: LoadingProp<T>): JSX.Element {
     <>
       {props.state.loading ? (
         <div className={classes.main}>
-          <Skeleton variant="text" height={80} />
           <Skeleton variant="circle" width={80} height={80} />
           <Skeleton variant="rect" className={classes.all} />
         </div>
