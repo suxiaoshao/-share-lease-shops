@@ -138,4 +138,3 @@ export const darkTheme = (MuiTheme: Theme): ThemeOption => {
   theme.categoryAxis.splitLine.show = false;
   return theme;
 };
-
