@@ -17,6 +17,8 @@ import {
 import { Loading } from '../components/common/loading';
 import OrderItem from '../components/page/orders/orderItem';
 import { shopStatusStore } from '../utils/store/shopStatus.store';
+import { useSearchParam } from 'react-use';
+import { useHistory } from 'react-router';
 
 const useClasses = makeStyles((theme) =>
   createStyles({
@@ -39,17 +41,24 @@ const useClasses = makeStyles((theme) =>
 
 export default function Orders(): JSX.Element {
   /**
+   * 路由切换
+   * */
+  const pageHistory = useHistory();
+  /**
    * 标签
    * */
-  const [tabValue, setTabValue] = React.useState<StatusType | null>(null);
+  const tabValue = useSearchParam('tab') as StatusType | null;
   /**
    * 页码
    * */
-  const [pageNum, setPageNum] = React.useState<number>(0);
+  const pageNum = Number(useSearchParam('pageNum') ?? 0);
   /**
    * 每页大小
    * */
-  const [pageSize, setPageSize] = React.useState<number>(10);
+  const pageSize = Number(useSearchParam('pageSize') ?? 10);
+  /**
+   * 样式
+   * */
   const classes = useClasses();
   /**
    * 数据
@@ -61,15 +70,32 @@ export default function Orders(): JSX.Element {
     undefined,
     [tabValue, pageNum, pageSize],
   );
+  /**
+   * 更改路由
+   * */
+  const changeRouter = React.useCallback(
+    (tab: StatusType | null, num: number, size: number) => {
+      const searchUrl =
+        tab !== null ? `?tab=${tab}&pageNum=${num}&pageSize=${size}` : `?pageNum=${num}&pageSize=${size}`;
+      pageHistory.push({ search: searchUrl });
+    },
+    [pageHistory],
+  );
   React.useEffect(() => {
-    setPageNum(0);
-  }, [tabValue]);
+    changeRouter(tabValue, 0, pageSize);
+  }, [changeRouter, pageSize, tabValue]);
   React.useEffect(() => {
     fn().then();
   }, [fn]);
   return (
     <MyDrawer className={classes.main}>
-      <OrdersTab className={classes.tab} tabValue={tabValue} setTableValue={setTabValue} />
+      <OrdersTab
+        className={classes.tab}
+        tabValue={tabValue}
+        setTableValue={(value) => {
+          changeRouter(value, pageNum, pageSize);
+        }}
+      />
       <TableContainer className={classes.table} component={Paper}>
         <Loading state={{ ...state, retry: fn }}>
           <Table>
@@ -98,12 +124,12 @@ export default function Orders(): JSX.Element {
             <TablePagination
               count={state.value?.total ?? 0}
               onChangePage={(event, page) => {
-                setPageNum(page);
+                changeRouter(tabValue, page, pageSize);
               }}
               page={pageNum}
               rowsPerPage={pageSize}
               onChangeRowsPerPage={(event) => {
-                setPageSize(parseInt(event.target.value));
+                changeRouter(tabValue, pageNum, parseInt(event.target.value));
               }}
               rowsPerPageOptions={[5, 10, 20]}
             />

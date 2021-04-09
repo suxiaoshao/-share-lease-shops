@@ -5,6 +5,7 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useAsyncFnWithNotify } from '../../../utils/hook/useAsyncFnWithNotify';
 import { getMoney } from '../../../utils/http/shop/getMoney';
 import { Loading } from '../../common/loading';
+import { useHistory } from 'react-router';
 
 const useClasses = makeStyles((theme) =>
   createStyles({
@@ -31,8 +32,21 @@ const useClasses = makeStyles((theme) =>
  * 状态信息
  * */
 export default function StatusView(): JSX.Element {
+  /**
+   * 路由控制器
+   * */
+  const pageHistory = useHistory();
+  /**
+   * 商店状态
+   * */
   const [shopStatus] = useStatusData();
+  /**
+   * 样式
+   * */
   const classes = useClasses();
+  /**
+   * 商店余额
+   * */
   const [state, fn] = useAsyncFnWithNotify(
     async () => {
       return await getMoney();
@@ -50,7 +64,12 @@ export default function StatusView(): JSX.Element {
       </Typography>
       <Box className={classes.main}>
         <Card className={classes.item}>
-          <CardActionArea className={classes.button}>
+          <CardActionArea
+            onClick={() => {
+              pageHistory.push({ pathname: '/orders', search: '?tab=payed' });
+            }}
+            className={classes.button}
+          >
             <CardContent className={classes.itemContent}>
               <Typography variant={'h4'}>{shopStatus.payedNum}</Typography>
               <Typography color={'textSecondary'}>待发货</Typography>
@@ -58,7 +77,12 @@ export default function StatusView(): JSX.Element {
           </CardActionArea>
         </Card>
         <Card className={classes.item}>
-          <CardActionArea className={classes.button}>
+          <CardActionArea
+            onClick={() => {
+              pageHistory.push({ pathname: '/orders', search: '?tab=abandon' });
+            }}
+            className={classes.button}
+          >
             <CardContent className={classes.itemContent}>
               <Typography variant={'h4'}>{shopStatus.abandonNum}</Typography>
               <Typography color={'textSecondary'}>退货待处理</Typography>
@@ -66,7 +90,12 @@ export default function StatusView(): JSX.Element {
           </CardActionArea>
         </Card>
         <Card className={classes.item}>
-          <CardActionArea className={classes.button}>
+          <CardActionArea
+            onClick={() => {
+              pageHistory.push({ pathname: '/orders', search: '?tab=revert' });
+            }}
+            className={classes.button}
+          >
             <CardContent className={classes.itemContent}>
               <Typography variant={'h4'}>{shopStatus.revertNum}</Typography>
               <Typography color={'textSecondary'}>租用退回待处理</Typography>
@@ -76,10 +105,12 @@ export default function StatusView(): JSX.Element {
         <Card className={classes.item}>
           <Loading state={{ ...state, retry: fn }}>
             {state.value && (
-              <CardContent className={classes.itemContent}>
-                <Typography variant={'h4'}>{state.value}</Typography>
-                <Typography color={'textSecondary'}>剩余金额</Typography>
-              </CardContent>
+              <CardActionArea className={classes.button}>
+                <CardContent className={classes.itemContent}>
+                  <Typography variant={'h4'}>{state.value}</Typography>
+                  <Typography color={'textSecondary'}>剩余金额</Typography>
+                </CardContent>
+              </CardActionArea>
             )}
           </Loading>
         </Card>
