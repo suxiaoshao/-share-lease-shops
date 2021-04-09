@@ -19,6 +19,11 @@ export interface StatisticsData {
   num: number;
 }
 
-export async function getStatistics(time: 7 | 6 | 12 | 30, type: 'mouth' | 'day'): Promise<StatisticsData[]> {
+export type StatisticsType = 'mouth' | 'day';
+
+/**
+ * 获取图表数据
+ * */
+export async function getStatistics(time: number, type: StatisticsType): Promise<StatisticsData[]> {
   return await httpGet(`/merchant/statistics?time=${time}&type=${type}`, undefined);
 }

@@ -4,15 +4,20 @@ import ShopInfoView from '../components/page/home/shopInfoView';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import StatusView from '../components/page/home/statusView';
 import { Box } from '@material-ui/core';
+import StatisticsView from '../components/page/home/StatisticsView';
 
 const useClass = makeStyles(() =>
   createStyles({
     main: {
-      position: 'relative',
-      overflow: 'auto',
+      display: 'flex',
+      flexDirection: 'column',
     },
     header: {
-      position: 'sticky',
+      flex: '0 0 auto',
+    },
+    content: {
+      flex: '1 1 0',
+      overflow: 'auto',
     },
   }),
 );
@@ -25,8 +30,9 @@ export default function HomePage(): JSX.Element {
   return (
     <MyDrawer className={classes.main}>
       <ShopInfoView className={classes.header} />
-      <Box padding={3}>
+      <Box padding={3} className={classes.content}>
         <StatusView />
+        <StatisticsView />
       </Box>
     </MyDrawer>
   );
