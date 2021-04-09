@@ -17,8 +17,8 @@ import {
 import { Loading } from '../components/common/loading';
 import OrderItem from '../components/page/orders/orderItem';
 import { shopStatusStore } from '../utils/store/shopStatus.store';
-import { useSearchParam } from 'react-use';
 import { useHistory } from 'react-router';
+import { useQuery } from '../utils/hook/useQuery';
 
 const useClasses = makeStyles((theme) =>
   createStyles({
@@ -47,15 +47,15 @@ export default function Orders(): JSX.Element {
   /**
    * 标签
    * */
-  const tabValue = useSearchParam('tab') as StatusType | null;
+  const tabValue = useQuery('tab') as StatusType | null;
   /**
    * 页码
    * */
-  const pageNum = Number(useSearchParam('pageNum') ?? 0);
+  const pageNum = Number(useQuery('pageNum') ?? 0);
   /**
    * 每页大小
    * */
-  const pageSize = Number(useSearchParam('pageSize') ?? 10);
+  const pageSize = Number(useQuery('pageSize') ?? 10);
   /**
    * 样式
    * */
