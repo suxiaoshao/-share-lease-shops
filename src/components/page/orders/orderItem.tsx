@@ -34,14 +34,14 @@ export default function OrderItem(props: OrderItemProp): JSX.Element {
       <TableCell padding={'none'}>
         <ListItem>
           <ListItemAvatar>
-            <Avatar src={props.order.good.picUrl} />
+            <Avatar src={props.order.good?.picUrl} />
           </ListItemAvatar>
-          <ListItemText primary={props.order.good.name} secondary={`x${props.order.num}`} />
+          <ListItemText primary={props.order.good?.name} secondary={`x${props.order.num}`} />
         </ListItem>
       </TableCell>
       <OrderAction onChange={props.onChange} orderStatus={props.order.status} oid={props.order.oid} />
       <TableCell>
-        {props.order.money} / {props.order.pledge < 0 ? '无' : props.order.pledge}
+        {props.order.money} / {props.order.pledge <= 0 ? '无' : props.order.pledge}
       </TableCell>
       <TableCell>{dayjs(props.order.createTime).format('YYYY-MM-DD HH:mm:ss')}</TableCell>
       <TableCell padding={'none'}>

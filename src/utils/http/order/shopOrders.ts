@@ -66,7 +66,7 @@ export interface OrderDetail {
    * 地址
    * */
   address: string;
-  good: GoodProp;
+  good: GoodProp | null;
   merchant: MerchantInfo;
   user: UserInfo;
   /**
