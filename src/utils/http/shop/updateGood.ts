@@ -27,8 +27,15 @@ export interface UpdateGoodProp {
    * 描述
    * */
   info: string;
+  /**
+   * 库存
+   * */
+  stock: number;
 }
 
+/**
+ * 更新商品信息
+ * */
 export async function updateGood(
   gid: number,
   name: string,
@@ -36,6 +43,7 @@ export async function updateGood(
   picUrl: string,
   price: number,
   info: string,
+  stock: number,
 ): Promise<GoodDetail> {
   return await httpPut<UpdateGoodProp, GoodDetail>('/merchant/good', {
     gid,
@@ -44,5 +52,6 @@ export async function updateGood(
     picUrl,
     price,
     info,
+    stock,
   });
 }

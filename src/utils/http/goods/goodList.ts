@@ -40,6 +40,10 @@ export interface GoodProp {
    * 商家 id
    * */
   mid: number;
+  /**
+   * 库存
+   * */
+  stock: number;
 }
 
 export async function getGoodList(

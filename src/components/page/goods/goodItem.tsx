@@ -87,6 +87,7 @@ export default function GoodItem(props: GoodItemProp): JSX.Element {
         <Typography variant={'body1'} color={'textSecondary'} component={'p'}>
           <span>价格 • {props.goodItem.price}</span>
           {props.goodItem.rent <= 0 || <span className={classes.rent}>租金 • {props.goodItem.rent}</span>}
+          <span className={classes.rent}>库存 • {props.goodItem.stock}</span>
         </Typography>
       </CardContent>
       <GoodEdit

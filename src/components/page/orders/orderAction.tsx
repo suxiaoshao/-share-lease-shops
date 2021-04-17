@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, TableCell } from '@material-ui/core';
-import { StatusType } from '../../../utils/http/order/shopOrders';
+import { StatusType } from '../../../utils/http/order/getShopOrders';
 import { getLabelFromStatus } from '../../../utils/getLabelFromStatus';
 import OrderSend from './orderSend';
 import { useAsyncFnWithNotify } from '../../../utils/hook/useAsyncFnWithNotify';

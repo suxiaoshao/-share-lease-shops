@@ -82,6 +82,10 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
    * */
   const [newPrice, setNewPrice] = React.useState(props.goodItem.price);
   /**
+   * 新库存
+   * */
+  const [newStock, setNewStock] = React.useState(props.goodItem.stock);
+  /**
    * 上传接口
    * */
   const [state, fetch] = useAsyncFnWithNotify(
@@ -94,7 +98,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
         const file = await getFileFromUrl(newImage);
         src = `${baseUrl}/file/${await upload(file)}`;
       }
-      const newGood = await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo);
+      const newGood = await updateGood(props.goodItem.gid, newName, newType, src, newPrice, newInfo, newStock);
       /**
        * 更新 shopInfo 的 good 数据
        * */
@@ -108,7 +112,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
       }
     },
     '更新信息成功',
-    [newImage, newInfo, newName, newPrice, newType, props.goodItem, props.onClose],
+    [newImage, newInfo, newName, newPrice, newType, props.goodItem, props.onClose, newStock],
   );
   return (
     <Dialog maxWidth={'sm'} open={props.open} onClose={props.onClose}>
@@ -130,6 +134,15 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
           value={newInfo}
           onChange={(event) => {
             setNewInfo(event.target.value);
+          }}
+          className={classes.input}
+        />
+        <TextField
+          label={'库存'}
+          fullWidth
+          value={newStock}
+          onChange={(event) => {
+            setNewStock(parseInt(event.target.value));
           }}
           className={classes.input}
         />
@@ -166,6 +179,7 @@ export default function GoodEdit(props: GoodEditProp): JSX.Element {
             setNewName(props.goodItem.name);
             setNewType(props.goodItem.type);
             setNewPrice(props.goodItem.price);
+            setNewStock(props.goodItem.stock);
           }}
         >
           还原

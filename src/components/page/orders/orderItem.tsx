@@ -1,7 +1,7 @@
 import React from 'react';
 import { Avatar, ListItem, ListItemAvatar, ListItemText, TableCell, TableRow } from '@material-ui/core';
 import dayjs from 'dayjs';
-import { OrderDetail } from '../../../utils/http/order/shopOrders';
+import { OrderDetail } from '../../../utils/http/order/getShopOrders';
 import Logo from '../../../assets/logo2.png';
 import OrderAction from './orderAction';
 

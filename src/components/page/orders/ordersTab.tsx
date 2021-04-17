@@ -1,6 +1,6 @@
 import React from 'react';
 import { Paper, Tab, Tabs } from '@material-ui/core';
-import { StatusType } from '../../../utils/http/order/shopOrders';
+import { StatusType } from '../../../utils/http/order/getShopOrders';
 
 export interface OrdersTabProp {
   /**

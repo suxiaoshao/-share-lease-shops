@@ -87,20 +87,24 @@ export interface OrderSearchResult {
   list: OrderDetail[];
 }
 
+export type OrderRuleType = 'ASC' | 'DESC';
+
 /**
  * 获取订单]
  * @param pageSize 页面大小
  * @param status 状态
  * @param pageNum 页数
+ * @param orderRule 排序方式
  * */
 export async function getShopOrders(
   pageNum: number,
   status: StatusType | null,
   pageSize: number,
+  orderRule: OrderRuleType,
 ): Promise<OrderSearchResult> {
   const url =
     status !== null
-      ? `/order/merchant?orderBy=oid&pageSize=${pageSize}&pageNum=${pageNum}&orderRule=ASC&status=${status}`
-      : `/order/merchant?orderBy=oid&pageSize=${pageSize}&pageNum=${pageNum}&orderRule=ASC`;
+      ? `/order/merchant?orderBy=oid&pageSize=${pageSize}&pageNum=${pageNum}&orderRule=${orderRule}&status=${status}`
+      : `/order/merchant?orderBy=oid&pageSize=${pageSize}&pageNum=${pageNum}&orderRule=${orderRule}`;
   return await httpGet<undefined, OrderSearchResult>(url, undefined);
 }

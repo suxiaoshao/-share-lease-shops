@@ -1,4 +1,4 @@
-import { StatusType } from './http/order/shopOrders';
+import { StatusType } from './http/order/getShopOrders';
 
 export function getLabelFromStatus(status: StatusType): string {
   switch (status) {

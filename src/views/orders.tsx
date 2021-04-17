@@ -1,6 +1,6 @@
 import React from 'react';
 import MyDrawer from '../components/myDrawer';
-import { getShopOrders, StatusType } from '../utils/http/order/shopOrders';
+import { getShopOrders, OrderRuleType, StatusType } from '../utils/http/order/getShopOrders';
 import OrdersTab from '../components/page/orders/ordersTab';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useAsyncFnWithNotify } from '../utils/hook/useAsyncFnWithNotify';
@@ -19,6 +19,7 @@ import OrderItem from '../components/page/orders/orderItem';
 import { shopStatusStore } from '../utils/store/shopStatus.store';
 import { useHistory } from 'react-router';
 import { useQuery } from '../utils/hook/useQuery';
+import TablePaginationActions from '../components/common/myTable/tablePaginationActions';
 
 const useClasses = makeStyles((theme) =>
   createStyles({
@@ -57,6 +58,10 @@ export default function Orders(): JSX.Element {
    * */
   const pageSize = Number(useQuery('pageSize') ?? 10);
   /**
+   * 排序规则
+   * */
+  const orderRule = (useQuery('orderRule') as OrderRuleType) ?? 'DESC';
+  /**
    * 样式
    * */
   const classes = useClasses();
@@ -65,25 +70,27 @@ export default function Orders(): JSX.Element {
    * */
   const [state, fn] = useAsyncFnWithNotify(
     async () => {
-      return await getShopOrders(pageNum, tabValue, pageSize);
+      return await getShopOrders(pageNum, tabValue, pageSize, orderRule);
     },
     undefined,
-    [tabValue, pageNum, pageSize],
+    [tabValue, pageNum, pageSize, orderRule],
   );
   /**
    * 更改路由
    * */
   const changeRouter = React.useCallback(
-    (tab: StatusType | null, num: number, size: number) => {
+    (tab: StatusType | null, num: number, size: number, rule: OrderRuleType) => {
       const searchUrl =
-        tab !== null ? `?tab=${tab}&pageNum=${num}&pageSize=${size}` : `?pageNum=${num}&pageSize=${size}`;
+        tab !== null
+          ? `?tab=${tab}&pageNum=${num}&pageSize=${size}&orderRule=${rule}`
+          : `?pageNum=${num}&pageSize=${size}&orderRule=${rule}`;
       pageHistory.push({ search: searchUrl });
     },
     [pageHistory],
   );
   React.useEffect(() => {
-    changeRouter(tabValue, 0, pageSize);
-  }, [changeRouter, pageSize, tabValue]);
+    changeRouter(tabValue, 0, pageSize, orderRule);
+  }, [changeRouter, orderRule, pageSize, tabValue]);
   React.useEffect(() => {
     fn().then();
   }, [fn]);
@@ -93,7 +100,7 @@ export default function Orders(): JSX.Element {
         className={classes.tab}
         tabValue={tabValue}
         setTableValue={(value) => {
-          changeRouter(value, pageNum, pageSize);
+          changeRouter(value, pageNum, pageSize, orderRule);
         }}
       />
       <TableContainer className={classes.table} component={Paper}>
@@ -124,14 +131,15 @@ export default function Orders(): JSX.Element {
             <TablePagination
               count={state.value?.total ?? 0}
               onChangePage={(event, page) => {
-                changeRouter(tabValue, page, pageSize);
+                changeRouter(tabValue, page, pageSize, orderRule);
               }}
               page={pageNum}
               rowsPerPage={pageSize}
               onChangeRowsPerPage={(event) => {
-                changeRouter(tabValue, pageNum, parseInt(event.target.value));
+                changeRouter(tabValue, pageNum, parseInt(event.target.value), orderRule);
               }}
               rowsPerPageOptions={[5, 10, 20]}
+              ActionsComponent={TablePaginationActions}
             />
           </Table>
         </Loading>
